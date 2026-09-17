@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --zayloq-deep: #030914;
+  --zayloq-ocean: #0A1E3A;
+  --zayloq-blue: #007BFF;
+  --zayloq-teal: #00D4C6;
+  --zayloq-lime: #7CFF6B;
+  --zayloq-cloud: #F7FAFC;
+  --zayloq-muted: #8DA0B9;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  background:
+    radial-gradient(circle at 10% 8%, rgba(0,123,255,.18), transparent 28rem),
+    radial-gradient(circle at 88% 18%, rgba(0,212,198,.12), transparent 28rem),
+    var(--zayloq-deep);
+  color: var(--zayloq-cloud);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: var(--zayloq-teal);
+  color: var(--zayloq-deep);
+}
+
+.z-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.z-glass {
+  background: rgba(7,22,41,.62);
+  border: 1px solid rgba(255,255,255,.09);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.z-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--zayloq-blue),
+    var(--zayloq-teal),
+    var(--zayloq-lime)
+  );
+}
+
+.z-gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--zayloq-blue),
+    var(--zayloq-teal),
+    var(--zayloq-lime)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.z-orb {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  filter: blur(100px);
+  opacity: .18;
+  pointer-events: none;
 }
