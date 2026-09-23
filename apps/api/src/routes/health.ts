@@ -1,5 +1,10 @@
 import type { FastifyInstance } from "fastify";
 
+import {
+  checkDatabaseHealth,
+  checkRedisHealth
+} from "@zayloq/database";
+
 export async function healthRoutes(app: FastifyInstance) {
   app.get("/health", async () => {
     return {
@@ -10,11 +15,31 @@ export async function healthRoutes(app: FastifyInstance) {
     };
   });
 
-  app.get("/ready", async () => {
-    return {
+  app.get("/ready", async (_request, reply) => {
+    const startedAt = performance.now();
+
+    const [database, redis] = await Promise.all([
+      checkDatabaseHealth(),
+      checkRedisHealth()
+    ]);
+
+    const ready =
+      database.status === "ok" &&
+      redis.status === "ok";
+
+    const payload = {
       service: "api",
-      status: "ok",
-      timestamp: new Date().toISOString()
+      status: ready ? "ready" : "not_ready",
+      timestamp: new Date().toISOString(),
+      latencyMs: Math.round(performance.now() - startedAt),
+      dependencies: {
+        database,
+        redis
+      }
     };
+
+    return reply
+      .code(ready ? 200 : 503)
+      .send(payload);
   });
 }

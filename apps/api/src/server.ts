@@ -1,6 +1,10 @@
 import Fastify from "fastify";
 
 import { loadEnvironment } from "@zayloq/config";
+import {
+  disconnectDatabase,
+  disconnectRedis
+} from "@zayloq/database";
 import { createLogger } from "@zayloq/observability";
 
 import { healthRoutes } from "./routes/health.js";
@@ -18,15 +22,34 @@ const app = Fastify({
 
 await app.register(healthRoutes);
 
+let shuttingDown = false;
+
 const shutdown = async (signal: string) => {
+  if (shuttingDown) {
+    return;
+  }
+
+  shuttingDown = true;
+
   app.log.info({ signal }, "Shutdown requested.");
 
   try {
     await app.close();
+
+    await Promise.allSettled([
+      disconnectDatabase(),
+      disconnectRedis()
+    ]);
+
     app.log.info("Zayloq API stopped cleanly.");
+
     process.exit(0);
   } catch (error) {
-    app.log.error({ error }, "Zayloq API shutdown failed.");
+    app.log.error(
+      { error },
+      "Zayloq API shutdown failed."
+    );
+
     process.exit(1);
   }
 };
@@ -49,6 +72,10 @@ try {
     "Zayloq Control Plane API started."
   );
 } catch (error) {
-  app.log.fatal({ error }, "Unable to start Zayloq API.");
+  app.log.fatal(
+    { error },
+    "Unable to start Zayloq API."
+  );
+
   process.exit(1);
 }
