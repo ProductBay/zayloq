@@ -1,5 +1,16 @@
 {
   "name": "@zayloq/api",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "@zayloq/config": "0.0.0",
+    "@zayloq/observability": "0.0.0",
+    "@zayloq/shared": "0.0.0",
+    "fastify": "^5.0.0"
+  }
 }
