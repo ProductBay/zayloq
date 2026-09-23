@@ -1,0 +1,44 @@
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: zayloq-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: zayloq
+      POSTGRES_PASSWORD: zayloq
+      POSTGRES_DB: zayloq
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - zayloq_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zayloq -d zayloq"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: zayloq-redis
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - zayloq_redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  zayloq_postgres_data:
+  zayloq_redis_data:
