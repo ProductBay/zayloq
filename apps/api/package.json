@@ -5,13 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts"
+    "start": "tsx src/server.ts",
+    "test:integration": "tsx --test src/**/*.integration.test.ts"
   },
   "dependencies": {
+    "@fastify/cookie": "^11.1.2",
+    "@fastify/cors": "^11.3.0",
+    "@fastify/helmet": "^13.1.1",
+    "@zayloq/auth": "^0.0.0",
     "@zayloq/config": "0.0.0",
     "@zayloq/database": "^0.0.0",
     "@zayloq/observability": "0.0.0",
     "@zayloq/shared": "0.0.0",
-    "fastify": "^5.0.0"
+    "fastify": "^5.0.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
   }
 }

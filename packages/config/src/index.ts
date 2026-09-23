@@ -18,6 +18,19 @@ const environmentSchema = z.object({
     .max(65535)
     .default(4000),
 
+  API_BODY_LIMIT_BYTES: z.coerce.number().int().min(1_024).max(1_048_576).default(16_384),
+
+  API_TRUST_PROXY: z.enum(["true", "false"]).default("false").transform((value) => value === "true"),
+
+  AUTH_TRUSTED_ORIGINS: z.string().default("http://localhost:3000"),
+
+  AUTH_COOKIE_NAME: z.string().regex(/^[A-Za-z0-9_-]+$/).default("zayloq_session"),
+
+  AUTH_LOGIN_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
+  AUTH_REGISTRATION_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(5),
+  AUTH_RECOVERY_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(5),
+  AUTH_RATE_LIMIT_WINDOW_SECONDS: z.coerce.number().int().positive().default(900),
+
   DATABASE_URL: z.string().min(1),
 
   REDIS_URL: z.string().min(1),
@@ -68,4 +81,40 @@ export function loadAuthEnvironment(
   }
 
   return result.data;
+}
+
+export interface ApiAuthEnvironment {
+  bodyLimitBytes: number;
+  cookieName: string;
+  trustedOrigins: string[];
+  loginRateLimitMax: number;
+  registrationRateLimitMax: number;
+  recoveryRateLimitMax: number;
+  rateLimitWindowSeconds: number;
+}
+
+export function loadApiAuthEnvironment(source: NodeJS.ProcessEnv = process.env): ApiAuthEnvironment {
+  const environment = environmentSchema.pick({
+    API_BODY_LIMIT_BYTES: true,
+    AUTH_COOKIE_NAME: true,
+    AUTH_TRUSTED_ORIGINS: true,
+    AUTH_LOGIN_RATE_LIMIT_MAX: true,
+    AUTH_REGISTRATION_RATE_LIMIT_MAX: true,
+    AUTH_RECOVERY_RATE_LIMIT_MAX: true,
+    AUTH_RATE_LIMIT_WINDOW_SECONDS: true
+  }).parse(source);
+  const trustedOrigins = environment.AUTH_TRUSTED_ORIGINS.split(",").map((origin) => origin.trim()).filter(Boolean);
+  if (trustedOrigins.length === 0 || trustedOrigins.some((origin) => origin === "*")) {
+    throw new Error("AUTH_TRUSTED_ORIGINS must contain explicit origins and cannot contain a wildcard.");
+  }
+  for (const origin of trustedOrigins) new URL(origin);
+  return {
+    bodyLimitBytes: environment.API_BODY_LIMIT_BYTES,
+    cookieName: environment.AUTH_COOKIE_NAME,
+    trustedOrigins,
+    loginRateLimitMax: environment.AUTH_LOGIN_RATE_LIMIT_MAX,
+    registrationRateLimitMax: environment.AUTH_REGISTRATION_RATE_LIMIT_MAX,
+    recoveryRateLimitMax: environment.AUTH_RECOVERY_RATE_LIMIT_MAX,
+    rateLimitWindowSeconds: environment.AUTH_RATE_LIMIT_WINDOW_SECONDS
+  };
 }

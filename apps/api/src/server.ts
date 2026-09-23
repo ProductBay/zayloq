@@ -1,26 +1,13 @@
-import Fastify from "fastify";
-
 import { loadEnvironment } from "@zayloq/config";
 import {
   disconnectDatabase,
   disconnectRedis
 } from "@zayloq/database";
-import { createLogger } from "@zayloq/observability";
-
-import { healthRoutes } from "./routes/health.js";
+import { buildApp } from "./app.js";
 
 const env = loadEnvironment();
 
-const logger = createLogger({
-  service: "zayloq-api",
-  level: env.LOG_LEVEL
-});
-
-const app = Fastify({
-  loggerInstance: logger
-});
-
-await app.register(healthRoutes);
+const app = await buildApp({ environment: env });
 
 let shuttingDown = false;
 

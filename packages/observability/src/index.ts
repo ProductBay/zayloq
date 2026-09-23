@@ -21,11 +21,23 @@ export function createLogger({
       paths: [
         "password",
         "authorization",
+        "cookie",
         "req.headers.authorization",
+        "req.headers.cookie",
+        "req.body.password",
+        "req.body.newPassword",
+        "req.body.token",
+        "headers.authorization",
+        "headers.cookie",
+        "body.password",
+        "body.newPassword",
+        "body.token",
         "DATABASE_URL",
         "REDIS_URL",
         "*.password",
+        "*.newPassword",
         "*.token",
+        "*.sessionToken",
         "*.secret"
       ],
       censor: "[REDACTED]"

@@ -29,4 +29,22 @@ The current `AuditEvent` model requires an `organizationId`. Registration, login
 
 OAuth providers can later add provider-specific credential services while preserving the normalized user identity and safe DTO boundary. MFA can be enforced between primary credential verification and session issuance once dedicated factors/challenges have approved persistence.
 
-Known limitations and intentionally deferred responsibilities are HTTP `/auth` endpoints, cookies, CSRF, browser transport, email/SMS delivery, Google/GitHub OAuth, MFA/TOTP, passkeys, UI, invitations, RBAC middleware, billing authorization, API keys, generated-app auth, SSO/SAML, and SCIM. Account-state enforcement is limited because the current `User` model has no suspension/deactivation state. Token invalidation shares `usedAt` with consumption because no invalidation column exists.
+Account-state enforcement is limited because the current `User` model has no suspension/deactivation state. Token invalidation shares `usedAt` with consumption because no invalidation column exists.
+
+## HTTP authentication boundary
+
+ZP-0E.5 exposes `POST /v1/auth/register`, `login`, `logout`, `logout-all`, email-verification `request`/`confirm`, password-reset `request`/`confirm`, plus `GET /v1/auth/session` and `/me`. Fastify handlers validate transport input and delegate all password, token, credential, and session behavior to this domain package.
+
+The browser transport is an opaque session token in the `zayloq_session` cookie (configurable by `AUTH_COOKIE_NAME`). It is `HttpOnly`, `SameSite=Lax`, scoped to `/`, bounded by the domain session TTL, and `Secure` in production. Tokens and hashes are absent from response bodies. `/session` returns `{ authenticated: false }` with HTTP 200 for missing or invalid sessions; protected endpoints return a sanitized 401 error.
+
+The reusable guard validates the cookie through `AuthService.sessions` and attaches only `SafeUser` and `SafeSession` as the request principal. Public user DTOs reduce `emailVerifiedAt` to a boolean; public session DTOs contain only the ID and timestamps. API errors have a stable `{ error: { code, message } }` shape and never serialize Prisma errors, causes, stacks, hashes, credentials, or request secrets.
+
+All state-changing auth requests require an `Origin` or `Referer` whose origin appears in the validated `AUTH_TRUSTED_ORIGINS` allow-list. This complements `SameSite=Lax`; a synchronizer-token mechanism can be added if future cross-site embedding or browser requirements demand it. Credentialed CORS uses the same explicit allow-list and never uses `*`. Helmet supplies baseline security headers, while request bodies are limited to 16 KiB by default.
+
+Login, registration, password-reset requests, and verification requests use a Redis-backed fixed-window limiter keyed by action plus SHA-256-derived IP and canonical-email identifiers. Plain email addresses, passwords, and tokens are not stored in limiter keys. Redis failure closes the protected operation with a sanitized 503 response. Limits and window length are environment-configurable. Forwarded client IPs are trusted only when `API_TRUST_PROXY=true` is explicitly configured for a deployment behind a trusted proxy.
+
+`AuthTokenDelivery` is the provider-neutral email handoff. Production defaults to an explicitly unavailable adapter rather than pretending delivery occurred. The memory adapter captures raw tokens only in development/tests and is not reachable through HTTP. Password-reset request responses are deliberately identical for known and unknown accounts, including internal delivery failure. A production email provider remains required before launch.
+
+Pino redacts Authorization, Cookie, password, new-password, token, and session-token fields. Operational request IDs and status logging remain available.
+
+Deferred work includes a real email provider, Google/GitHub OAuth, MFA, passkeys, advanced bot protection, Studio UI, and any future CSRF-token mechanism required by expanded cross-site flows.
