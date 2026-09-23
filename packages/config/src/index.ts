@@ -24,7 +24,12 @@ const environmentSchema = z.object({
 
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"])
-    .default("info")
+    .default("info"),
+
+  AUTH_SESSION_TTL_SECONDS: z.coerce.number().int().positive().default(2_592_000),
+  AUTH_EMAIL_VERIFICATION_TTL_SECONDS: z.coerce.number().int().positive().default(86_400),
+  AUTH_PASSWORD_RESET_TTL_SECONDS: z.coerce.number().int().positive().default(3_600),
+  AUTH_SESSION_TOUCH_INTERVAL_SECONDS: z.coerce.number().int().nonnegative().default(300)
 });
 
 export type ZayloqEnvironment = z.infer<typeof environmentSchema>;
@@ -39,6 +44,27 @@ export function loadEnvironment(
     console.error(result.error.flatten().fieldErrors);
 
     throw new Error("Zayloq environment validation failed.");
+  }
+
+  return result.data;
+}
+
+const authEnvironmentSchema = environmentSchema.pick({
+  AUTH_SESSION_TTL_SECONDS: true,
+  AUTH_EMAIL_VERIFICATION_TTL_SECONDS: true,
+  AUTH_PASSWORD_RESET_TTL_SECONDS: true,
+  AUTH_SESSION_TOUCH_INTERVAL_SECONDS: true
+});
+
+export type AuthEnvironment = z.infer<typeof authEnvironmentSchema>;
+
+export function loadAuthEnvironment(
+  source: NodeJS.ProcessEnv = process.env
+): AuthEnvironment {
+  const result = authEnvironmentSchema.safeParse(source);
+
+  if (!result.success) {
+    throw new Error("Zayloq authentication configuration validation failed.");
   }
 
   return result.data;

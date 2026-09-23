@@ -1,5 +1,21 @@
 {
   "name": "@zayloq/auth",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "test": "tsx --test src/crypto/*.test.ts src/identity/*.test.ts",
+    "test:integration": "tsx --test src/auth.integration.test.ts"
+  },
+  "dependencies": {
+    "@zayloq/config": "0.0.0",
+    "@zayloq/database": "0.0.0",
+    "argon2": "^0.44.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
+  }
 }

@@ -11,8 +11,14 @@ export type {
   Membership,
   Project,
   ProjectEnvironment,
-  AuditEvent
+  AuditEvent,
+  AuthSession,
+  EmailVerificationToken,
+  PasswordResetToken,
+  UserCredential
 } from "./generated/client/client.js";
+
+export { AuthProvider, SessionStatus } from "./generated/client/client.js";
 
 export * from "./redis/index.js";
 
