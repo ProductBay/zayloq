@@ -71,3 +71,23 @@ export type ProjectEnvironment = Prisma.ProjectEnvironmentModel
  * 
  */
 export type AuditEvent = Prisma.AuditEventModel
+/**
+ * Model UserCredential
+ * 
+ */
+export type UserCredential = Prisma.UserCredentialModel
+/**
+ * Model AuthSession
+ * 
+ */
+export type AuthSession = Prisma.AuthSessionModel
+/**
+ * Model EmailVerificationToken
+ * 
+ */
+export type EmailVerificationToken = Prisma.EmailVerificationTokenModel
+/**
+ * Model PasswordResetToken
+ * 
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel

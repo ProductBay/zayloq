@@ -43,3 +43,21 @@ export const EnvironmentType = {
 } as const
 
 export type EnvironmentType = (typeof EnvironmentType)[keyof typeof EnvironmentType]
+
+
+export const AuthProvider = {
+  PASSWORD: 'PASSWORD',
+  GOOGLE: 'GOOGLE',
+  GITHUB: 'GITHUB'
+} as const
+
+export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider]
+
+
+export const SessionStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type SessionStatus = (typeof SessionStatus)[keyof typeof SessionStatus]
