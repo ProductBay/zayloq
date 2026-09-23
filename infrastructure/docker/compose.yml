@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: zayloq
 
     ports:
-      - "5432:5432"
+      - "55432:5432"
 
     volumes:
       - zayloq_postgres_data:/var/lib/postgresql/data
@@ -42,3 +42,5 @@ services:
 volumes:
   zayloq_postgres_data:
   zayloq_redis_data:
+
+
