@@ -1,0 +1,2 @@
+import { EmptyState } from "@/components/ui/states";
+export default function BuildsPage() { return <div className="page-stack"><header className="page-heading"><div><span className="eyebrow">Pipeline</span><h1>Builds</h1><p>Build history will appear after the isolated runtime is connected.</p></div></header><div className="surface-card"><EmptyState title="No build runtime yet" description="Future builds will show planning, generation, dependencies, validation, repair, and preview status here." /></div></div>; }

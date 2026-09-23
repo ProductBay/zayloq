@@ -1,0 +1,2 @@
+import { EmptyState } from "@/components/ui/states";
+export default function DeploymentsPage() { return <div className="page-stack"><header className="page-heading"><div><span className="eyebrow">Shipping</span><h1>Deployments</h1><p>Deployment infrastructure is not connected in this phase.</p></div></header><div className="surface-card"><EmptyState title="No deployments" description="Production destinations and release history will appear when deployment infrastructure is available." /></div></div>; }

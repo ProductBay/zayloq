@@ -1,0 +1,11 @@
+import Link from "next/link";
+import { ArrowRight, Box, FolderKanban, Plus, Rocket, Sparkles } from "lucide-react";
+import type { PublicUser } from "@/lib/api/types";
+import { EmptyState } from "../ui/states";
+
+export function Dashboard({ user }: { user: PublicUser }) {
+  const name = user.displayName?.split(" ")[0] ?? "builder";
+  return <div className="page-stack"><header className="page-heading"><div><span className="eyebrow">Control center</span><h1>Welcome back, {name}.</h1><p>Your ideas, projects, builds, and deployments will live here.</p></div><Link href="/projects/new" className="primary-button small"><Plus /> Create project</Link></header><section className="metric-grid"><Metric icon={FolderKanban} label="Projects" value="0" note="No projects created" /><Metric icon={Box} label="Recent builds" value="—" note="Build runtime not connected" /><Metric icon={Rocket} label="Deployments" value="—" note="Deployment arrives later" /><Metric icon={Sparkles} label="Usage" value="—" note="Usage tracking arrives later" /></section><section className="dashboard-grid"><div className="surface-card wide"><div className="section-title"><div><span className="eyebrow">Projects</span><h2>Recent projects</h2></div></div><EmptyState title="No projects yet" description="Describe what you want to build and Zayloq will turn it into software when project persistence and planning are connected." action={<Link href="/projects/new" className="text-link">Create your first project <ArrowRight /></Link>} /></div><div className="surface-card"><span className="eyebrow">Account</span><h2>Ready to build</h2><div className="identity-card"><div className="avatar large">{(user.displayName ?? user.email)[0]?.toUpperCase()}</div><div><strong>{user.displayName ?? "Zayloq user"}</strong><span>{user.email}</span></div></div><div className={`verification-status ${user.emailVerified ? "verified" : ""}`}><span />{user.emailVerified ? "Email verified" : "Email verification pending"}</div></div></section></div>;
+}
+
+function Metric({ icon: Icon, label, value, note }: { icon: React.ElementType; label: string; value: string; note: string }) { return <article className="metric-card"><div><Icon /><span>{label}</span></div><strong>{value}</strong><p>{note}</p></article>; }
