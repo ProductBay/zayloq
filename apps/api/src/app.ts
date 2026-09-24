@@ -11,6 +11,7 @@ import { authRoutes } from "./auth/auth-routes.js";
 import { MemoryAuthTokenDelivery, UnavailableAuthTokenDelivery, type AuthTokenDelivery } from "./auth/delivery.js";
 import { RedisAuthRateLimiter, type AuthRateLimiter } from "./auth/rate-limiter.js";
 import { healthRoutes } from "./routes/health.js";
+import { controlPlaneRoutes } from "./control-plane/control-plane-routes.js";
 
 export interface BuildAppOptions { environment?: ZayloqEnvironment; auth?: AuthService; delivery?: AuthTokenDelivery; limiter?: AuthRateLimiter; logger?: boolean; }
 
@@ -33,7 +34,7 @@ export async function buildApp(options: BuildAppOptions = {}) {
   await app.register(cors, { credentials: true, origin(origin, callback) { callback(null, !origin || apiAuth.trustedOrigins.includes(origin)); } });
 
   app.addHook("preHandler", async (request) => {
-    if (request.method !== "POST" || !request.url.startsWith("/v1/auth/")) return;
+    if (!["POST", "PUT", "PATCH", "DELETE"].includes(request.method) || !request.url.startsWith("/v1/")) return;
     const source = request.headers.origin ?? request.headers.referer;
     let origin: string | undefined;
     try { origin = source ? new URL(source).origin : undefined; } catch { throw new ApiError(403, "UNTRUSTED_ORIGIN", "The request origin is not trusted."); }
@@ -48,5 +49,6 @@ export async function buildApp(options: BuildAppOptions = {}) {
 
   await app.register(healthRoutes);
   await app.register(authRoutes, { auth, delivery, limiter, environment, apiAuth });
+  await app.register(controlPlaneRoutes, { auth, limiter, environment, apiAuth });
   return app;
 }

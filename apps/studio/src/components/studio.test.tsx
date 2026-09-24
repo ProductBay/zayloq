@@ -10,15 +10,18 @@ import { WorkspaceShell } from "./projects/workspace-shell";
 import { StudioShell } from "./layout/studio-shell";
 import { ApiClientError } from "@/lib/api/client";
 import { authApi } from "@/lib/api/auth-service";
+import { projectApi, organizationApi } from "@/lib/api/control-plane-service";
+import { OrganizationProvider } from "./organizations/organization-provider";
 
 const replace = vi.fn(); const refresh = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace, refresh }), usePathname: () => "/dashboard", useSearchParams: () => new URLSearchParams() }));
 vi.mock("@/lib/api/auth-service", () => ({ authApi: { session: vi.fn(), login: vi.fn(), register: vi.fn(), logout: vi.fn() } }));
+vi.mock("@/lib/api/control-plane-service", () => ({ organizationApi: { list: vi.fn() }, projectApi: { get: vi.fn(), environments: vi.fn(), list: vi.fn(), create: vi.fn(), update: vi.fn(), archive: vi.fn() } }));
 
 const user = { id: "user-1", email: "builder@example.test", displayName: "Builder", emailVerified: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
 const session = { id: "session-1", expiresAt: new Date(Date.now() + 60_000).toISOString(), lastSeenAt: null };
 
-beforeEach(() => { vi.clearAllMocks(); vi.mocked(authApi.session).mockResolvedValue({ authenticated: false }); });
+beforeEach(() => { vi.clearAllMocks(); vi.mocked(authApi.session).mockResolvedValue({ authenticated: false }); vi.mocked(organizationApi.list).mockResolvedValue({ organizations: [] }); vi.mocked(projectApi.get).mockResolvedValue({ project: { id: "project-shell", organizationId: "org-1", name: "Test project", slug: "test", status: "ACTIVE", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } }); vi.mocked(projectApi.environments).mockResolvedValue({ environments: [] }); });
 afterEach(cleanup);
 
 describe("authentication UI", () => {
@@ -64,14 +67,14 @@ describe("Studio foundation", () => {
   });
 
   it("renders workspace shells without fabricated files or builds", async () => {
-    render(<WorkspaceShell projectId="project-shell" />); expect(screen.getByText("Preview unavailable")).toBeInTheDocument();
+    render(<OrganizationProvider><WorkspaceShell projectId="project-shell" /></OrganizationProvider>); expect(await screen.findByText("Preview unavailable")).toBeInTheDocument();
     await userEvent.click(screen.getByRole("tab", { name: "Files" })); expect(screen.getByText("No generated files")).toBeInTheDocument();
     await userEvent.click(screen.getByRole("tab", { name: "Database" })); expect(screen.getByText(/control-plane database/)).toBeInTheDocument();
   });
 
   it("supports collapsible responsive navigation", async () => {
     vi.mocked(authApi.session).mockResolvedValue({ authenticated: true, user, session });
-    render(<AuthProvider><StudioShell><div>Page</div></StudioShell></AuthProvider>);
+    render(<AuthProvider><OrganizationProvider><StudioShell><div>Page</div></StudioShell></OrganizationProvider></AuthProvider>);
     const menu = screen.getByRole("button", { name: "Open navigation" }); fireEvent.click(menu);
     expect(screen.getByRole("button", { name: "Close navigation" })).toBeInTheDocument();
   });
