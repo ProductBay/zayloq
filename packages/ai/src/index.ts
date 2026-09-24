@@ -5,6 +5,7 @@ export * from "./gateway/concurrency.js";
 export * from "./gateway/factory.js";
 export * from "./models/model-resolver.js";
 export * from "./providers/openai/openai-provider.js";
+export * from "./providers/gemini/gemini-provider.js";
 export * from "./providers/registry.js";
 export * from "./security/request-policy.js";
 export * from "./usage/cost-accounting.js";

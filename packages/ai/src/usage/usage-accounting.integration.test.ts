@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getDatabaseClient } from "@zayloq/database";
 import { AiError } from "../errors/ai-error.js";
 import { UsageAccountingService } from "./usage-accounting.js";
 import { MeteredAiGateway } from "./metered-ai-gateway.js";
@@ -10,6 +9,7 @@ import type { AiGateway } from "../gateway/ai-gateway.js";
 
 const integration = process.env.AI_BILLING_INTEGRATION_TEST === "1" ? test : test.skip;
 integration("credit lifecycle, safety, idempotency, and tenant isolation", async () => {
+  const { getDatabaseClient } = await import("@zayloq/database");
   const db = getDatabaseClient(); const service = new UsageAccountingService(db); const key = crypto.randomUUID();
   const user = await db.user.create({ data: { email: `billing-${key}@example.test` } });
   const otherUser = await db.user.create({ data: { email: `billing-other-${key}@example.test` } });
@@ -29,19 +29,23 @@ integration("credit lifecycle, safety, idempotency, and tenant isolation", async
     await assert.rejects(() => service.release(otherOrganization.id, second.reservation.id), (error) => error instanceof AiError && error.code === "BILLING_CONFLICT");
     await assert.rejects(() => service.createAndReserve({ organizationId: organization.id, userId: user.id, provider: "OPENAI", model: "fixture", logicalModelRole: "FAST", operationType: "TEST", idempotencyKey: "settle", reservationUnits: BigInt(1) }), (error) => error instanceof AiError && error.code === "IDEMPOTENCY_REPLAY");
     await assert.rejects(() => service.createAndReserve({ organizationId: organization.id, userId: user.id, provider: "OPENAI", model: "fixture", logicalModelRole: "FAST", operationType: "TEST", idempotencyKey: "too-large", reservationUnits: BigInt(751) }), (error) => error instanceof AiError && error.code === "INSUFFICIENT_CREDITS");
-    const costs = new CatalogAiCostCalculator(new StaticAiPricingCatalog([{ provider: "OPENAI", model: "fixture", effectiveFrom: new Date("2020-01-01"), currency: "USD", inputMicrosPerMillion: BigInt(1_000_000), outputMicrosPerMillion: BigInt(1_000_000), version: "fixture" }]));
+    const costs = new CatalogAiCostCalculator(new StaticAiPricingCatalog([{ provider: "OPENAI", model: "fixture", effectiveFrom: new Date("2020-01-01"), currency: "USD", inputMicrosPerMillion: BigInt(1_000_000), outputMicrosPerMillion: BigInt(1_000_000), version: "fixture" }, { provider: "GEMINI", model: "gemini-fixture", effectiveFrom: new Date("2020-01-01"), currency: "USD", inputMicrosPerMillion: BigInt(1_000_000), cachedInputMicrosPerMillion: BigInt(500_000), outputMicrosPerMillion: BigInt(1_000_000), version: "gemini-fixture" }]));
     const policy = new CostPlusCreditPolicy({ unitsPerCurrencyMicro: BigInt(1), markupBasisPoints: BigInt(10_000), minimumChargeUnits: BigInt(1), version: "fixture" });
-    const successGateway = { generateText: async () => ({ provider: "OPENAI", model: "fixture", output: "ok", finishReason: "completed", usage: { inputTokens: 10, outputTokens: 5, totalTokens: 15 }, latencyMs: 1, requestId: "fixture-request", retryCount: 0 }) } as unknown as AiGateway;
+    const successGateway = { resolveTarget: () => ({ provider: "OPENAI", model: "fixture" }), generateText: async () => ({ provider: "OPENAI", model: "fixture", output: "ok", finishReason: "completed", usage: { inputTokens: 10, outputTokens: 5, totalTokens: 15 }, latencyMs: 1, requestId: "fixture-request", retryCount: 0 }) } as unknown as AiGateway;
     const metered = new MeteredAiGateway(successGateway, service, costs, policy);
     await metered.generateText({ task: "text", modelRole: "FAST", messages: [{ role: "user", content: "fixture" }] }, { organizationId: organization.id, userId: user.id, operationType: "METERED_SUCCESS", idempotencyKey: "metered-success", reservationUnits: BigInt(100), provider: "OPENAI", model: "fixture" });
     const persisted = await db.aiUsageEvent.findFirstOrThrow({ where: { organizationId: organization.id, operationType: "METERED_SUCCESS" } }); assert.equal(persisted.status, "COMPLETED"); assert.equal(persisted.totalTokens, 15);
-    const failedGateway = { generateText: async () => { throw new AiError("PROVIDER_REJECTED", "safe"); } } as unknown as AiGateway;
+    const failedGateway = { resolveTarget: () => ({ provider: "OPENAI", model: "fixture" }), generateText: async () => { throw new AiError("PROVIDER_REJECTED", "safe"); } } as unknown as AiGateway;
     await assert.rejects(() => new MeteredAiGateway(failedGateway, service, costs, policy).generateText({ task: "text", modelRole: "FAST", messages: [{ role: "user", content: "fixture" }] }, { organizationId: organization.id, userId: user.id, operationType: "METERED_FAILURE", idempotencyKey: "metered-failure", reservationUnits: BigInt(100), provider: "OPENAI", model: "fixture" }), (error) => error instanceof AiError && error.code === "PROVIDER_REJECTED");
     assert.equal((await db.aiUsageEvent.findFirstOrThrow({ where: { organizationId: organization.id, operationType: "METERED_FAILURE" } })).status, "FAILED");
+    const geminiGateway = { resolveTarget: () => ({ provider: "GEMINI", model: "gemini-fixture" }), generateText: async () => ({ provider: "GEMINI", model: "gemini-fixture", output: "ok", finishReason: "STOP", usage: { inputTokens: 10, cachedInputTokens: 2, outputTokens: 5, totalTokens: 15 }, latencyMs: 1, requestId: "gemini-request", retryCount: 0 }) } as unknown as AiGateway;
+    await new MeteredAiGateway(geminiGateway, service, costs, policy).generateText({ task: "text", modelRole: "FAST", provider: "GEMINI", messages: [{ role: "user", content: "fixture" }] }, { organizationId: organization.id, userId: user.id, operationType: "GEMINI_METERED", idempotencyKey: "gemini-metered", reservationUnits: BigInt(100), provider: "GEMINI", model: "gemini-fixture" });
+    const geminiUsage = await db.aiUsageEvent.findFirstOrThrow({ where: { organizationId: organization.id, operationType: "GEMINI_METERED" } }); assert.equal(geminiUsage.provider, "GEMINI"); assert.equal(geminiUsage.cachedInputTokens, 2); assert.equal(geminiUsage.status, "COMPLETED");
+    const unpricedGateway = { ...geminiGateway, resolveTarget: () => ({ provider: "GEMINI", model: "missing-price" }) } as unknown as AiGateway; const beforeUnpriced = await db.aiUsageEvent.count({ where: { organizationId: organization.id } }); await assert.rejects(() => new MeteredAiGateway(unpricedGateway, service, costs, policy).generateText({ task: "text", modelRole: "FAST", provider: "GEMINI", messages: [{ role: "user", content: "fixture" }] }, { organizationId: organization.id, userId: user.id, operationType: "GEMINI_UNPRICED", idempotencyKey: "gemini-unpriced", reservationUnits: BigInt(100), provider: "GEMINI", model: "missing-price" }), (error) => error instanceof AiError && error.code === "MISSING_PRICE"); assert.equal(await db.aiUsageEvent.count({ where: { organizationId: organization.id } }), beforeUnpriced);
     const concurrent = await Promise.allSettled(["concurrent-a", "concurrent-b"].map((idempotencyKey) => service.createAndReserve({ organizationId: organization.id, userId: user.id, provider: "OPENAI", model: "fixture", logicalModelRole: "FAST", operationType: "CONCURRENT", idempotencyKey, reservationUnits: BigInt(500) })));
     assert.equal(concurrent.filter((result) => result.status === "fulfilled").length, 1);
     const winner = concurrent.find((result): result is PromiseFulfilledResult<Awaited<ReturnType<typeof service.createAndReserve>>> => result.status === "fulfilled"); if (winner) await service.release(organization.id, winner.value.reservation.id, "TEST_RELEASE");
     const ledger = await db.creditLedgerEntry.findMany({ where: { organizationId: organization.id } }); assert.deepEqual(new Set(ledger.map((entry) => entry.type)), new Set(["GRANT", "RESERVATION", "CONSUMPTION", "RELEASE"]));
-    account = await db.creditAccount.findUniqueOrThrow({ where: { organizationId: organization.id } }); assert.equal(account.availableBalanceUnits, BigInt(735));
+    account = await db.creditAccount.findUniqueOrThrow({ where: { organizationId: organization.id } }); assert.equal(account.availableBalanceUnits, BigInt(721));
   } finally { await db.organization.deleteMany({ where: { id: { in: [organization.id, otherOrganization.id] } } }); await db.user.deleteMany({ where: { id: { in: [user.id, otherUser.id] } } }); }
 });

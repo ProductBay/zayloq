@@ -36,10 +36,14 @@ const environmentSchema = z.object({
   REDIS_URL: z.string().min(1),
 
   OPENAI_API_KEY: z.string().min(1).optional(),
-  AI_DEFAULT_PROVIDER: z.enum(["OPENAI"]).default("OPENAI"),
+  GEMINI_API_KEY: z.string().min(1).optional(),
+  AI_DEFAULT_PROVIDER: z.enum(["OPENAI", "GEMINI"]).default("OPENAI"),
   AI_FAST_MODEL: z.string().min(1).optional(),
   AI_REASONING_MODEL: z.string().min(1).optional(),
   AI_GENERATION_MODEL: z.string().min(1).optional(),
+  ZAYLOQ_AI_GEMINI_FAST_MODEL: z.string().min(1).optional(),
+  ZAYLOQ_AI_GEMINI_REASONING_MODEL: z.string().min(1).optional(),
+  ZAYLOQ_AI_GEMINI_GENERATION_MODEL: z.string().min(1).optional(),
   AI_REQUEST_TIMEOUT_MS: z.coerce.number().int().min(1_000).max(600_000).default(60_000),
   AI_MAX_OUTPUT_TOKENS: z.coerce.number().int().min(1).max(100_000).default(8_192),
   AI_MAX_REQUEST_CHARS: z.coerce.number().int().min(1_000).max(10_000_000).default(200_000),
@@ -79,16 +83,19 @@ export function loadEnvironment(
   return result.data;
 }
 
-const aiEnvironmentSchema = environmentSchema.pick({ OPENAI_API_KEY: true, AI_DEFAULT_PROVIDER: true, AI_FAST_MODEL: true, AI_REASONING_MODEL: true, AI_GENERATION_MODEL: true, AI_REQUEST_TIMEOUT_MS: true, AI_MAX_OUTPUT_TOKENS: true, AI_MAX_REQUEST_CHARS: true, AI_RETRY_ATTEMPTS: true, AI_GLOBAL_CONCURRENCY: true, AI_ORGANIZATION_CONCURRENCY: true, AI_USER_CONCURRENCY: true });
-export type AiEnvironment = Omit<z.infer<typeof aiEnvironmentSchema>, "OPENAI_API_KEY" | "AI_FAST_MODEL" | "AI_REASONING_MODEL" | "AI_GENERATION_MODEL"> & { OPENAI_API_KEY: string; AI_FAST_MODEL: string; AI_REASONING_MODEL: string; AI_GENERATION_MODEL: string; };
+const aiEnvironmentSchema = environmentSchema.pick({ OPENAI_API_KEY: true, GEMINI_API_KEY: true, AI_DEFAULT_PROVIDER: true, AI_FAST_MODEL: true, AI_REASONING_MODEL: true, AI_GENERATION_MODEL: true, ZAYLOQ_AI_GEMINI_FAST_MODEL: true, ZAYLOQ_AI_GEMINI_REASONING_MODEL: true, ZAYLOQ_AI_GEMINI_GENERATION_MODEL: true, AI_REQUEST_TIMEOUT_MS: true, AI_MAX_OUTPUT_TOKENS: true, AI_MAX_REQUEST_CHARS: true, AI_RETRY_ATTEMPTS: true, AI_GLOBAL_CONCURRENCY: true, AI_ORGANIZATION_CONCURRENCY: true, AI_USER_CONCURRENCY: true });
+export type AiEnvironment = z.infer<typeof aiEnvironmentSchema>;
 export function loadAiEnvironment(source: NodeJS.ProcessEnv = process.env): AiEnvironment {
   const result = aiEnvironmentSchema.safeParse(source);
-  if (!result.success || !result.data.OPENAI_API_KEY || !result.data.AI_FAST_MODEL || !result.data.AI_REASONING_MODEL || !result.data.AI_GENERATION_MODEL) throw new Error("Zayloq AI configuration is incomplete.");
-  return result.data as AiEnvironment;
+  if (!result.success) throw new Error("Zayloq AI configuration is invalid.");
+  const value = result.data; const openAiReady = Boolean(value.OPENAI_API_KEY && value.AI_FAST_MODEL && value.AI_REASONING_MODEL && value.AI_GENERATION_MODEL); const geminiReady = Boolean(value.GEMINI_API_KEY && value.ZAYLOQ_AI_GEMINI_FAST_MODEL && value.ZAYLOQ_AI_GEMINI_REASONING_MODEL && value.ZAYLOQ_AI_GEMINI_GENERATION_MODEL);
+  if ((value.AI_DEFAULT_PROVIDER === "OPENAI" && !openAiReady) || (value.AI_DEFAULT_PROVIDER === "GEMINI" && !geminiReady)) throw new Error("Zayloq AI configuration is incomplete for the selected provider.");
+  return value;
 }
 export function getAiConfigurationState(source: NodeJS.ProcessEnv = process.env) {
   const parsed = aiEnvironmentSchema.safeParse(source); const value = parsed.success ? parsed.data : undefined;
-  return { configured: Boolean(value?.OPENAI_API_KEY && value.AI_FAST_MODEL && value.AI_REASONING_MODEL && value.AI_GENERATION_MODEL), provider: value?.AI_DEFAULT_PROVIDER ?? "OPENAI", models: { fast: Boolean(value?.AI_FAST_MODEL), reasoning: Boolean(value?.AI_REASONING_MODEL), generation: Boolean(value?.AI_GENERATION_MODEL) } };
+  const openai = Boolean(value?.OPENAI_API_KEY && value.AI_FAST_MODEL && value.AI_REASONING_MODEL && value.AI_GENERATION_MODEL); const gemini = Boolean(value?.GEMINI_API_KEY && value.ZAYLOQ_AI_GEMINI_FAST_MODEL && value.ZAYLOQ_AI_GEMINI_REASONING_MODEL && value.ZAYLOQ_AI_GEMINI_GENERATION_MODEL);
+  return { configured: value?.AI_DEFAULT_PROVIDER === "GEMINI" ? gemini : openai, provider: value?.AI_DEFAULT_PROVIDER ?? "OPENAI", providers: { OPENAI: openai ? "configured" : "not_configured", GEMINI: gemini ? "configured" : "not_configured" }, models: { fast: value?.AI_DEFAULT_PROVIDER === "GEMINI" ? Boolean(value.ZAYLOQ_AI_GEMINI_FAST_MODEL) : Boolean(value?.AI_FAST_MODEL), reasoning: value?.AI_DEFAULT_PROVIDER === "GEMINI" ? Boolean(value.ZAYLOQ_AI_GEMINI_REASONING_MODEL) : Boolean(value?.AI_REASONING_MODEL), generation: value?.AI_DEFAULT_PROVIDER === "GEMINI" ? Boolean(value.ZAYLOQ_AI_GEMINI_GENERATION_MODEL) : Boolean(value?.AI_GENERATION_MODEL) } };
 }
 const aiBillingEnvironmentSchema = environmentSchema.pick({ AI_PRICING_CATALOG_JSON: true, AI_CREDIT_UNITS_PER_CURRENCY_MICRO: true, AI_CREDIT_MARKUP_BPS: true, AI_CREDIT_MIN_CHARGE_UNITS: true });
 export type AiBillingEnvironment = z.infer<typeof aiBillingEnvironmentSchema> & { AI_PRICING_CATALOG_JSON: string };

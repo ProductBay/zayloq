@@ -12,9 +12,10 @@ export class AiGateway {
   constructor(private readonly config: AiEnvironment, private readonly registry: AiProviderRegistry, private readonly concurrency: AiConcurrencyController, private readonly logger: Logger = silent) { this.models = new ModelResolver(config); }
   generateText(request: AiRequest) { return this.execute(request, (provider, resolved) => provider.generateText(resolved)); }
   generateStructured<T>(request: AiStructuredRequest<T>) { return this.execute(request, (provider, resolved) => provider.generateStructured({ ...resolved, schema: request.schema, schemaName: request.schemaName })); }
+  resolveTarget(request: Pick<AiRequest, "provider" | "modelRole">) { const provider = this.models.provider(request.provider); return { provider, model: this.models.resolve(request.modelRole, provider) }; }
   private async execute<T>(request: AiRequest, operation: (provider: AiProvider, resolved: ResolvedAiRequest) => Promise<AiResponse<T>>): Promise<AiResponse<T>> {
     enforceRequestPolicy(request, this.config.AI_MAX_REQUEST_CHARS);
-    const providerName = this.models.provider(); const provider = this.registry.get(providerName); const model = this.models.resolve(request.modelRole); const controller = new AbortController(); let timedOut = false; let lease: AiConcurrencyLease | undefined;
+    const target = this.resolveTarget(request); const providerName = target.provider; const provider = this.registry.get(providerName); const model = target.model; const controller = new AbortController(); let timedOut = false; let lease: AiConcurrencyLease | undefined;
     const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, request.timeoutMs ?? this.config.AI_REQUEST_TIMEOUT_MS); const onAbort = () => controller.abort(); request.signal?.addEventListener("abort", onAbort, { once: true }); const telemetry = { ...safeRequestTelemetry(request), provider: providerName, model };
     try {
       lease = await this.concurrency.acquire(request.metadata, controller.signal);

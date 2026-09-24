@@ -1,10 +1,10 @@
 import type { z } from "zod";
-export type AiProviderName = "OPENAI";
+export type AiProviderName = "OPENAI" | "GEMINI";
 export type AiModelRole = "FAST" | "REASONING" | "GENERATION";
 export type AiTask = "text" | "structured" | "planning" | "generation" | "repair" | "classification" | "summarization" | "extraction";
 export interface AiMessage { role: "user" | "assistant"; content: string; }
 export interface AiAttribution { userId?: string; organizationId?: string; projectId?: string; environmentId?: string; operationId?: string; }
-export interface AiRequest { task: AiTask; modelRole: AiModelRole; system?: string; messages: AiMessage[]; maxOutputTokens?: number; temperature?: number; metadata?: AiAttribution; signal?: AbortSignal; timeoutMs?: number; }
+export interface AiRequest { task: AiTask; modelRole: AiModelRole; provider?: AiProviderName; system?: string; messages: AiMessage[]; maxOutputTokens?: number; temperature?: number; metadata?: AiAttribution; signal?: AbortSignal; timeoutMs?: number; }
 export interface AiStructuredRequest<T> extends AiRequest { schema: z.ZodType<T>; schemaName: string; }
 export interface AiUsage { inputTokens?: number; cachedInputTokens?: number; outputTokens?: number; totalTokens?: number; }
 export interface AiResponse<T> { provider: AiProviderName; model: string; output: T; finishReason: string | null; usage: AiUsage; latencyMs: number; requestId?: string; retryCount: number; }

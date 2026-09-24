@@ -3,9 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts" },
-  "scripts": { "test": "tsx --test src/**/*.test.ts", "smoke:openai": "tsx src/testing/openai-smoke.ts" },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "tsx --test src/**/*.test.ts",
+    "smoke:openai": "tsx src/testing/openai-smoke.ts",
+    "smoke:gemini": "tsx src/testing/gemini-smoke.ts"
+  },
   "dependencies": {
+    "@google/genai": "^2.24.0",
     "@zayloq/config": "^0.0.0",
     "@zayloq/database": "^0.0.0",
     "@zayloq/observability": "^0.0.0",

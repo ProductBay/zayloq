@@ -43,7 +43,7 @@ export class UsageAccountingService {
       throw error;
     }
   }
-  async settle(organizationId: string, reservationId: string, actualUnits: bigint, usage: { providerRequestId?: string; inputTokens?: number; cachedInputTokens?: number; outputTokens?: number; totalTokens?: number; providerCostMicros: bigint; currency: string; pricingVersion: string; retryCount: number; latencyMs: number }) {
+  async settle(organizationId: string, reservationId: string, actualUnits: bigint, usage: { provider?: string; model?: string; providerRequestId?: string; inputTokens?: number; cachedInputTokens?: number; outputTokens?: number; totalTokens?: number; providerCostMicros: bigint; currency: string; pricingVersion: string; retryCount: number; latencyMs: number }) {
     return this.db.$transaction(async (tx) => {
       const reservation = await tx.aiUsageReservation.findFirst({ where: { id: reservationId, organizationId }, include: { usageEvent: true } });
       if (!reservation || reservation.status !== "ACTIVE" || actualUnits < BigInt(0) || actualUnits > reservation.reservedUnits) throw new AiError("BILLING_CONFLICT", "The reservation cannot be settled.");
@@ -51,7 +51,7 @@ export class UsageAccountingService {
       const changed = await tx.creditAccount.updateMany({ where: { organizationId, reservedBalanceUnits: { gte: reservation.reservedUnits } }, data: { reservedBalanceUnits: { decrement: reservation.reservedUnits }, availableBalanceUnits: { increment: unused }, lifetimeConsumedUnits: { increment: actualUnits } } });
       if (changed.count !== 1) throw new AiError("BILLING_CONFLICT", "Credit account invariant failed.");
       await tx.aiUsageReservation.update({ where: { id: reservation.id }, data: { status: "SETTLED", settledUnits: actualUnits, settledAt: new Date() } });
-      await tx.aiUsageEvent.update({ where: { id: reservation.usageEventId }, data: { ...usage, creditsChargedUnits: actualUnits, status: "COMPLETED", completedAt: new Date() } });
+      const { model, ...normalized } = usage; await tx.aiUsageEvent.update({ where: { id: reservation.usageEventId }, data: { ...normalized, ...(model ? { providerModel: model } : {}), creditsChargedUnits: actualUnits, status: "COMPLETED", completedAt: new Date() } });
       if (actualUnits > BigInt(0)) await tx.creditLedgerEntry.create({ data: { organizationId, usageEventId: reservation.usageEventId, reservationId, type: "CONSUMPTION", amountUnits: -actualUnits, referenceType: "AI_USAGE", referenceId: reservation.usageEventId, category: "AI_CONSUMPTION" } });
       if (unused > BigInt(0)) await tx.creditLedgerEntry.create({ data: { organizationId, usageEventId: reservation.usageEventId, reservationId, type: "RELEASE", amountUnits: unused, referenceType: "AI_USAGE", referenceId: reservation.usageEventId, category: "UNUSED_RESERVATION" } });
     }, { isolationLevel: "Serializable" });
