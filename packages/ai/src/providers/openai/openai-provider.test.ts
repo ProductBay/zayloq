@@ -1,0 +1,11 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import OpenAI from "openai";
+import { z } from "zod";
+import { AiError } from "../../errors/ai-error.js";
+import { OpenAiProvider } from "./openai-provider.js";
+const signal = new AbortController().signal;
+const request = { task: "text" as const, modelRole: "FAST" as const, provider: "OPENAI" as const, model: "configured-model", messages: [{ role: "user" as const, content: "hello" }], maxOutputTokens: 20, signal };
+function client(response: object | Error) { return { responses: { create: async () => { if (response instanceof Error) throw response; return response; } } } as unknown as OpenAI; }
+test("OpenAI adapter normalizes Responses output without leaking SDK objects", async () => { const provider = new OpenAiProvider("secret", client({ id: "resp_1", model: "configured-model", status: "completed", output_text: "ready", usage: { input_tokens: 4, output_tokens: 1, total_tokens: 5 } })); const result = await provider.generateText(request); assert.deepEqual(result.usage, { inputTokens: 4, outputTokens: 1, totalTokens: 5 }); assert.equal(result.output, "ready"); assert.equal("output_text" in result, false); });
+test("OpenAI adapter validates structured output and sanitizes transport errors", async () => { const schema = z.object({ ready: z.boolean() }); const valid = new OpenAiProvider("secret", client({ id: "resp_2", model: "configured-model", status: "completed", output_text: JSON.stringify({ ready: true }) })); assert.deepEqual((await valid.generateStructured({ ...request, task: "structured", schemaName: "ready", schema })).output, { ready: true }); const invalid = new OpenAiProvider("secret", client({ id: "resp_3", model: "configured-model", status: "completed", output_text: JSON.stringify({ ready: "yes" }) })); await assert.rejects(() => invalid.generateStructured({ ...request, task: "structured", schemaName: "ready", schema }), (error: unknown) => error instanceof AiError && error.code === "INVALID_PROVIDER_RESPONSE"); const failed = new OpenAiProvider("secret", client(new Error("Authorization: Bearer super-secret"))); await assert.rejects(() => failed.generateText(request), (error: unknown) => error instanceof AiError && !error.message.includes("super-secret")); });

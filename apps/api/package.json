@@ -12,6 +12,7 @@
     "@fastify/cookie": "^11.1.2",
     "@fastify/cors": "^11.3.0",
     "@fastify/helmet": "^13.1.1",
+    "@zayloq/ai": "^0.0.0",
     "@zayloq/auth": "^0.0.0",
     "@zayloq/config": "0.0.0",
     "@zayloq/database": "^0.0.0",

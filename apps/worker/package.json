@@ -8,6 +8,7 @@
     "start": "tsx src/worker.ts"
   },
   "dependencies": {
+    "@zayloq/ai": "^0.0.0",
     "@zayloq/config": "0.0.0",
     "@zayloq/observability": "0.0.0",
     "@zayloq/shared": "0.0.0"

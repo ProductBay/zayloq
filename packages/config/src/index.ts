@@ -35,6 +35,19 @@ const environmentSchema = z.object({
 
   REDIS_URL: z.string().min(1),
 
+  OPENAI_API_KEY: z.string().min(1).optional(),
+  AI_DEFAULT_PROVIDER: z.enum(["OPENAI"]).default("OPENAI"),
+  AI_FAST_MODEL: z.string().min(1).optional(),
+  AI_REASONING_MODEL: z.string().min(1).optional(),
+  AI_GENERATION_MODEL: z.string().min(1).optional(),
+  AI_REQUEST_TIMEOUT_MS: z.coerce.number().int().min(1_000).max(600_000).default(60_000),
+  AI_MAX_OUTPUT_TOKENS: z.coerce.number().int().min(1).max(100_000).default(8_192),
+  AI_MAX_REQUEST_CHARS: z.coerce.number().int().min(1_000).max(10_000_000).default(200_000),
+  AI_RETRY_ATTEMPTS: z.coerce.number().int().min(1).max(4).default(2),
+  AI_GLOBAL_CONCURRENCY: z.coerce.number().int().min(1).max(1_000).default(20),
+  AI_ORGANIZATION_CONCURRENCY: z.coerce.number().int().min(1).max(100).default(5),
+  AI_USER_CONCURRENCY: z.coerce.number().int().min(1).max(50).default(2),
+
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"])
     .default("info"),
@@ -60,6 +73,18 @@ export function loadEnvironment(
   }
 
   return result.data;
+}
+
+const aiEnvironmentSchema = environmentSchema.pick({ OPENAI_API_KEY: true, AI_DEFAULT_PROVIDER: true, AI_FAST_MODEL: true, AI_REASONING_MODEL: true, AI_GENERATION_MODEL: true, AI_REQUEST_TIMEOUT_MS: true, AI_MAX_OUTPUT_TOKENS: true, AI_MAX_REQUEST_CHARS: true, AI_RETRY_ATTEMPTS: true, AI_GLOBAL_CONCURRENCY: true, AI_ORGANIZATION_CONCURRENCY: true, AI_USER_CONCURRENCY: true });
+export type AiEnvironment = Omit<z.infer<typeof aiEnvironmentSchema>, "OPENAI_API_KEY" | "AI_FAST_MODEL" | "AI_REASONING_MODEL" | "AI_GENERATION_MODEL"> & { OPENAI_API_KEY: string; AI_FAST_MODEL: string; AI_REASONING_MODEL: string; AI_GENERATION_MODEL: string; };
+export function loadAiEnvironment(source: NodeJS.ProcessEnv = process.env): AiEnvironment {
+  const result = aiEnvironmentSchema.safeParse(source);
+  if (!result.success || !result.data.OPENAI_API_KEY || !result.data.AI_FAST_MODEL || !result.data.AI_REASONING_MODEL || !result.data.AI_GENERATION_MODEL) throw new Error("Zayloq AI configuration is incomplete.");
+  return result.data as AiEnvironment;
+}
+export function getAiConfigurationState(source: NodeJS.ProcessEnv = process.env) {
+  const parsed = aiEnvironmentSchema.safeParse(source); const value = parsed.success ? parsed.data : undefined;
+  return { configured: Boolean(value?.OPENAI_API_KEY && value.AI_FAST_MODEL && value.AI_REASONING_MODEL && value.AI_GENERATION_MODEL), provider: value?.AI_DEFAULT_PROVIDER ?? "OPENAI", models: { fast: Boolean(value?.AI_FAST_MODEL), reasoning: Boolean(value?.AI_REASONING_MODEL), generation: Boolean(value?.AI_GENERATION_MODEL) } };
 }
 
 const authEnvironmentSchema = environmentSchema.pick({
