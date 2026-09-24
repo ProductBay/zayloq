@@ -7,3 +7,6 @@ export type MembershipRole = "OWNER" | "ADMIN" | "MEMBER";
 export interface Organization { id: string; name: string; slug: string; status: "ACTIVE" | "SUSPENDED" | "ARCHIVED"; role: MembershipRole; createdAt: string; updatedAt: string; }
 export interface Project { id: string; organizationId: string; name: string; slug: string; status: "ACTIVE" | "SUSPENDED" | "ARCHIVED"; createdAt: string; updatedAt: string; }
 export interface ProjectEnvironment { id: string; projectId: string; type: "DEVELOPMENT" | "PREVIEW" | "PRODUCTION"; createdAt: string; updatedAt: string; }
+export interface CreditSummary { organizationId: string; availableBalanceUnits: string; reservedBalanceUnits: string; lifetimeGrantedUnits: string; lifetimeConsumedUnits: string; updatedAt: string | null; }
+export interface AiUsageEvent { id: string; provider: string; providerModel: string; logicalModelRole: string; operationType: string; inputTokens: number | null; cachedInputTokens: number | null; outputTokens: number | null; totalTokens: number | null; providerCostMicros: string | null; currency: string; creditsChargedUnits: string; status: "PENDING" | "COMPLETED" | "FAILED"; createdAt: string; }
+export interface CreditLedgerEntry { id: string; type: string; amountUnits: string; category: string; description: string | null; createdAt: string; }

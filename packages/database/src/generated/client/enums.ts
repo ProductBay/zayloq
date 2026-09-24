@@ -45,6 +45,36 @@ export const EnvironmentType = {
 export type EnvironmentType = (typeof EnvironmentType)[keyof typeof EnvironmentType]
 
 
+export const AiUsageStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type AiUsageStatus = (typeof AiUsageStatus)[keyof typeof AiUsageStatus]
+
+
+export const CreditReservationStatus = {
+  ACTIVE: 'ACTIVE',
+  SETTLED: 'SETTLED',
+  RELEASED: 'RELEASED'
+} as const
+
+export type CreditReservationStatus = (typeof CreditReservationStatus)[keyof typeof CreditReservationStatus]
+
+
+export const CreditLedgerEntryType = {
+  GRANT: 'GRANT',
+  RESERVATION: 'RESERVATION',
+  RELEASE: 'RELEASE',
+  CONSUMPTION: 'CONSUMPTION',
+  ADJUSTMENT: 'ADJUSTMENT',
+  REFUND: 'REFUND'
+} as const
+
+export type CreditLedgerEntryType = (typeof CreditLedgerEntryType)[keyof typeof CreditLedgerEntryType]
+
+
 export const AuthProvider = {
   PASSWORD: 'PASSWORD',
   GOOGLE: 'GOOGLE',

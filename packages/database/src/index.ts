@@ -16,6 +16,10 @@ export type {
   EmailVerificationToken,
   PasswordResetToken,
   UserCredential
+  ,AiUsageEvent
+  ,AiUsageReservation
+  ,CreditAccount
+  ,CreditLedgerEntry
 } from "./generated/client/client.js";
 
 export {
@@ -25,6 +29,9 @@ export {
   OrganizationStatus,
   ProjectStatus,
   SessionStatus
+  ,AiUsageStatus
+  ,CreditReservationStatus
+  ,CreditLedgerEntryType
 } from "./generated/client/client.js";
 
 export * from "./redis/index.js";

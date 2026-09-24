@@ -12,6 +12,7 @@ import { MemoryAuthTokenDelivery, UnavailableAuthTokenDelivery, type AuthTokenDe
 import { RedisAuthRateLimiter, type AuthRateLimiter } from "./auth/rate-limiter.js";
 import { healthRoutes } from "./routes/health.js";
 import { controlPlaneRoutes } from "./control-plane/control-plane-routes.js";
+import { usageRoutes } from "./usage/usage-routes.js";
 
 export interface BuildAppOptions { environment?: ZayloqEnvironment; auth?: AuthService; delivery?: AuthTokenDelivery; limiter?: AuthRateLimiter; logger?: boolean; }
 
@@ -50,5 +51,6 @@ export async function buildApp(options: BuildAppOptions = {}) {
   await app.register(healthRoutes);
   await app.register(authRoutes, { auth, delivery, limiter, environment, apiAuth });
   await app.register(controlPlaneRoutes, { auth, limiter, environment, apiAuth });
+  await app.register(usageRoutes, { auth, environment, apiAuth });
   return app;
 }

@@ -47,6 +47,10 @@ const environmentSchema = z.object({
   AI_GLOBAL_CONCURRENCY: z.coerce.number().int().min(1).max(1_000).default(20),
   AI_ORGANIZATION_CONCURRENCY: z.coerce.number().int().min(1).max(100).default(5),
   AI_USER_CONCURRENCY: z.coerce.number().int().min(1).max(50).default(2),
+  AI_PRICING_CATALOG_JSON: z.string().min(2).optional(),
+  AI_CREDIT_UNITS_PER_CURRENCY_MICRO: z.coerce.number().int().positive().default(1),
+  AI_CREDIT_MARKUP_BPS: z.coerce.number().int().nonnegative().default(12_500),
+  AI_CREDIT_MIN_CHARGE_UNITS: z.coerce.number().int().nonnegative().default(1),
 
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"])
@@ -85,6 +89,13 @@ export function loadAiEnvironment(source: NodeJS.ProcessEnv = process.env): AiEn
 export function getAiConfigurationState(source: NodeJS.ProcessEnv = process.env) {
   const parsed = aiEnvironmentSchema.safeParse(source); const value = parsed.success ? parsed.data : undefined;
   return { configured: Boolean(value?.OPENAI_API_KEY && value.AI_FAST_MODEL && value.AI_REASONING_MODEL && value.AI_GENERATION_MODEL), provider: value?.AI_DEFAULT_PROVIDER ?? "OPENAI", models: { fast: Boolean(value?.AI_FAST_MODEL), reasoning: Boolean(value?.AI_REASONING_MODEL), generation: Boolean(value?.AI_GENERATION_MODEL) } };
+}
+const aiBillingEnvironmentSchema = environmentSchema.pick({ AI_PRICING_CATALOG_JSON: true, AI_CREDIT_UNITS_PER_CURRENCY_MICRO: true, AI_CREDIT_MARKUP_BPS: true, AI_CREDIT_MIN_CHARGE_UNITS: true });
+export type AiBillingEnvironment = z.infer<typeof aiBillingEnvironmentSchema> & { AI_PRICING_CATALOG_JSON: string };
+export function loadAiBillingEnvironment(source: NodeJS.ProcessEnv = process.env): AiBillingEnvironment {
+  const result = aiBillingEnvironmentSchema.safeParse(source);
+  if (!result.success || !result.data.AI_PRICING_CATALOG_JSON) throw new Error("Zayloq AI billing configuration is incomplete.");
+  return result.data as AiBillingEnvironment;
 }
 
 const authEnvironmentSchema = environmentSchema.pick({

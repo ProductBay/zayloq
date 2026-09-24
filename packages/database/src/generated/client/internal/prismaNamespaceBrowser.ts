@@ -56,6 +56,10 @@ export const ModelName = {
   Membership: 'Membership',
   Project: 'Project',
   ProjectEnvironment: 'ProjectEnvironment',
+  AiUsageEvent: 'AiUsageEvent',
+  CreditAccount: 'CreditAccount',
+  AiUsageReservation: 'AiUsageReservation',
+  CreditLedgerEntry: 'CreditLedgerEntry',
   AuditEvent: 'AuditEvent',
   UserCredential: 'UserCredential',
   AuthSession: 'AuthSession',
@@ -139,6 +143,83 @@ export const ProjectEnvironmentScalarFieldEnum = {
 } as const
 
 export type ProjectEnvironmentScalarFieldEnum = (typeof ProjectEnvironmentScalarFieldEnum)[keyof typeof ProjectEnvironmentScalarFieldEnum]
+
+
+export const AiUsageEventScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  projectId: 'projectId',
+  environmentId: 'environmentId',
+  provider: 'provider',
+  providerModel: 'providerModel',
+  logicalModelRole: 'logicalModelRole',
+  operationType: 'operationType',
+  idempotencyKey: 'idempotencyKey',
+  providerRequestId: 'providerRequestId',
+  inputTokens: 'inputTokens',
+  cachedInputTokens: 'cachedInputTokens',
+  outputTokens: 'outputTokens',
+  totalTokens: 'totalTokens',
+  providerCostMicros: 'providerCostMicros',
+  currency: 'currency',
+  pricingVersion: 'pricingVersion',
+  creditsChargedUnits: 'creditsChargedUnits',
+  status: 'status',
+  retryCount: 'retryCount',
+  latencyMs: 'latencyMs',
+  failureCode: 'failureCode',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+} as const
+
+export type AiUsageEventScalarFieldEnum = (typeof AiUsageEventScalarFieldEnum)[keyof typeof AiUsageEventScalarFieldEnum]
+
+
+export const CreditAccountScalarFieldEnum = {
+  organizationId: 'organizationId',
+  availableBalanceUnits: 'availableBalanceUnits',
+  reservedBalanceUnits: 'reservedBalanceUnits',
+  lifetimeGrantedUnits: 'lifetimeGrantedUnits',
+  lifetimeConsumedUnits: 'lifetimeConsumedUnits',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CreditAccountScalarFieldEnum = (typeof CreditAccountScalarFieldEnum)[keyof typeof CreditAccountScalarFieldEnum]
+
+
+export const AiUsageReservationScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  usageEventId: 'usageEventId',
+  reservedUnits: 'reservedUnits',
+  settledUnits: 'settledUnits',
+  status: 'status',
+  createdAt: 'createdAt',
+  settledAt: 'settledAt',
+  releasedAt: 'releasedAt'
+} as const
+
+export type AiUsageReservationScalarFieldEnum = (typeof AiUsageReservationScalarFieldEnum)[keyof typeof AiUsageReservationScalarFieldEnum]
+
+
+export const CreditLedgerEntryScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  usageEventId: 'usageEventId',
+  reservationId: 'reservationId',
+  type: 'type',
+  amountUnits: 'amountUnits',
+  referenceType: 'referenceType',
+  referenceId: 'referenceId',
+  category: 'category',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type CreditLedgerEntryScalarFieldEnum = (typeof CreditLedgerEntryScalarFieldEnum)[keyof typeof CreditLedgerEntryScalarFieldEnum]
 
 
 export const AuditEventScalarFieldEnum = {

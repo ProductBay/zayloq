@@ -67,6 +67,26 @@ export type Project = Prisma.ProjectModel
  */
 export type ProjectEnvironment = Prisma.ProjectEnvironmentModel
 /**
+ * Model AiUsageEvent
+ * 
+ */
+export type AiUsageEvent = Prisma.AiUsageEventModel
+/**
+ * Model CreditAccount
+ * 
+ */
+export type CreditAccount = Prisma.CreditAccountModel
+/**
+ * Model AiUsageReservation
+ * 
+ */
+export type AiUsageReservation = Prisma.AiUsageReservationModel
+/**
+ * Model CreditLedgerEntry
+ * 
+ */
+export type CreditLedgerEntry = Prisma.CreditLedgerEntryModel
+/**
  * Model AuditEvent
  * 
  */

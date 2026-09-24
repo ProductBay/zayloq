@@ -201,6 +201,10 @@ export type OrganizationWhereInput = {
   memberships?: Prisma.MembershipListRelationFilter
   projects?: Prisma.ProjectListRelationFilter
   auditEvents?: Prisma.AuditEventListRelationFilter
+  aiUsageEvents?: Prisma.AiUsageEventListRelationFilter
+  creditAccount?: Prisma.XOR<Prisma.CreditAccountNullableScalarRelationFilter, Prisma.CreditAccountWhereInput> | null
+  creditLedgerEntries?: Prisma.CreditLedgerEntryListRelationFilter
+  creditReservations?: Prisma.AiUsageReservationListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -214,6 +218,10 @@ export type OrganizationOrderByWithRelationInput = {
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
   projects?: Prisma.ProjectOrderByRelationAggregateInput
   auditEvents?: Prisma.AuditEventOrderByRelationAggregateInput
+  aiUsageEvents?: Prisma.AiUsageEventOrderByRelationAggregateInput
+  creditAccount?: Prisma.CreditAccountOrderByWithRelationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryOrderByRelationAggregateInput
+  creditReservations?: Prisma.AiUsageReservationOrderByRelationAggregateInput
 }
 
 export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +238,10 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   memberships?: Prisma.MembershipListRelationFilter
   projects?: Prisma.ProjectListRelationFilter
   auditEvents?: Prisma.AuditEventListRelationFilter
+  aiUsageEvents?: Prisma.AiUsageEventListRelationFilter
+  creditAccount?: Prisma.XOR<Prisma.CreditAccountNullableScalarRelationFilter, Prisma.CreditAccountWhereInput> | null
+  creditLedgerEntries?: Prisma.CreditLedgerEntryListRelationFilter
+  creditReservations?: Prisma.AiUsageReservationListRelationFilter
 }, "id" | "slug">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -269,6 +281,10 @@ export type OrganizationCreateInput = {
   memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
   projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
   auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -282,6 +298,10 @@ export type OrganizationUncheckedCreateInput = {
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
   auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -295,6 +315,10 @@ export type OrganizationUpdateInput = {
   memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
   auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -308,6 +332,10 @@ export type OrganizationUncheckedUpdateInput = {
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
   auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -407,6 +435,62 @@ export type OrganizationUpdateOneRequiredWithoutProjectsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutProjectsInput, Prisma.OrganizationUpdateWithoutProjectsInput>, Prisma.OrganizationUncheckedUpdateWithoutProjectsInput>
 }
 
+export type OrganizationCreateNestedOneWithoutAiUsageEventsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAiUsageEventsInput, Prisma.OrganizationUncheckedCreateWithoutAiUsageEventsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAiUsageEventsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutAiUsageEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAiUsageEventsInput, Prisma.OrganizationUncheckedCreateWithoutAiUsageEventsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAiUsageEventsInput
+  upsert?: Prisma.OrganizationUpsertWithoutAiUsageEventsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutAiUsageEventsInput, Prisma.OrganizationUpdateWithoutAiUsageEventsInput>, Prisma.OrganizationUncheckedUpdateWithoutAiUsageEventsInput>
+}
+
+export type OrganizationCreateNestedOneWithoutCreditAccountInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditAccountInput, Prisma.OrganizationUncheckedCreateWithoutCreditAccountInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutCreditAccountInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutCreditAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditAccountInput, Prisma.OrganizationUncheckedCreateWithoutCreditAccountInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutCreditAccountInput
+  upsert?: Prisma.OrganizationUpsertWithoutCreditAccountInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutCreditAccountInput, Prisma.OrganizationUpdateWithoutCreditAccountInput>, Prisma.OrganizationUncheckedUpdateWithoutCreditAccountInput>
+}
+
+export type OrganizationCreateNestedOneWithoutCreditReservationsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditReservationsInput, Prisma.OrganizationUncheckedCreateWithoutCreditReservationsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutCreditReservationsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutCreditReservationsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditReservationsInput, Prisma.OrganizationUncheckedCreateWithoutCreditReservationsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutCreditReservationsInput
+  upsert?: Prisma.OrganizationUpsertWithoutCreditReservationsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutCreditReservationsInput, Prisma.OrganizationUpdateWithoutCreditReservationsInput>, Prisma.OrganizationUncheckedUpdateWithoutCreditReservationsInput>
+}
+
+export type OrganizationCreateNestedOneWithoutCreditLedgerEntriesInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditLedgerEntriesInput, Prisma.OrganizationUncheckedCreateWithoutCreditLedgerEntriesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutCreditLedgerEntriesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutCreditLedgerEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditLedgerEntriesInput, Prisma.OrganizationUncheckedCreateWithoutCreditLedgerEntriesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutCreditLedgerEntriesInput
+  upsert?: Prisma.OrganizationUpsertWithoutCreditLedgerEntriesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutCreditLedgerEntriesInput, Prisma.OrganizationUpdateWithoutCreditLedgerEntriesInput>, Prisma.OrganizationUncheckedUpdateWithoutCreditLedgerEntriesInput>
+}
+
 export type OrganizationCreateNestedOneWithoutAuditEventsInput = {
   create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAuditEventsInput, Prisma.OrganizationUncheckedCreateWithoutAuditEventsInput>
   connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAuditEventsInput
@@ -431,6 +515,10 @@ export type OrganizationCreateWithoutMembershipsInput = {
   archivedAt?: Date | string | null
   projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
   auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMembershipsInput = {
@@ -443,6 +531,10 @@ export type OrganizationUncheckedCreateWithoutMembershipsInput = {
   archivedAt?: Date | string | null
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
   auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMembershipsInput = {
@@ -471,6 +563,10 @@ export type OrganizationUpdateWithoutMembershipsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
   auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMembershipsInput = {
@@ -483,6 +579,10 @@ export type OrganizationUncheckedUpdateWithoutMembershipsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
   auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProjectsInput = {
@@ -495,6 +595,10 @@ export type OrganizationCreateWithoutProjectsInput = {
   archivedAt?: Date | string | null
   memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
   auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProjectsInput = {
@@ -507,6 +611,10 @@ export type OrganizationUncheckedCreateWithoutProjectsInput = {
   archivedAt?: Date | string | null
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
   auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -535,6 +643,10 @@ export type OrganizationUpdateWithoutProjectsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
   auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProjectsInput = {
@@ -547,6 +659,330 @@ export type OrganizationUncheckedUpdateWithoutProjectsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
   auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutAiUsageEventsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutAiUsageEventsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutAiUsageEventsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutAiUsageEventsInput, Prisma.OrganizationUncheckedCreateWithoutAiUsageEventsInput>
+}
+
+export type OrganizationUpsertWithoutAiUsageEventsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutAiUsageEventsInput, Prisma.OrganizationUncheckedUpdateWithoutAiUsageEventsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutAiUsageEventsInput, Prisma.OrganizationUncheckedCreateWithoutAiUsageEventsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutAiUsageEventsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutAiUsageEventsInput, Prisma.OrganizationUncheckedUpdateWithoutAiUsageEventsInput>
+}
+
+export type OrganizationUpdateWithoutAiUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutAiUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutCreditAccountInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutCreditAccountInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutCreditAccountInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditAccountInput, Prisma.OrganizationUncheckedCreateWithoutCreditAccountInput>
+}
+
+export type OrganizationUpsertWithoutCreditAccountInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutCreditAccountInput, Prisma.OrganizationUncheckedUpdateWithoutCreditAccountInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditAccountInput, Prisma.OrganizationUncheckedCreateWithoutCreditAccountInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutCreditAccountInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutCreditAccountInput, Prisma.OrganizationUncheckedUpdateWithoutCreditAccountInput>
+}
+
+export type OrganizationUpdateWithoutCreditAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutCreditAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutCreditReservationsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutCreditReservationsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutCreditReservationsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditReservationsInput, Prisma.OrganizationUncheckedCreateWithoutCreditReservationsInput>
+}
+
+export type OrganizationUpsertWithoutCreditReservationsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutCreditReservationsInput, Prisma.OrganizationUncheckedUpdateWithoutCreditReservationsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditReservationsInput, Prisma.OrganizationUncheckedCreateWithoutCreditReservationsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutCreditReservationsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutCreditReservationsInput, Prisma.OrganizationUncheckedUpdateWithoutCreditReservationsInput>
+}
+
+export type OrganizationUpdateWithoutCreditReservationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutCreditReservationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutCreditLedgerEntriesInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutCreditLedgerEntriesInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.OrganizationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutCreditLedgerEntriesInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditLedgerEntriesInput, Prisma.OrganizationUncheckedCreateWithoutCreditLedgerEntriesInput>
+}
+
+export type OrganizationUpsertWithoutCreditLedgerEntriesInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutCreditLedgerEntriesInput, Prisma.OrganizationUncheckedUpdateWithoutCreditLedgerEntriesInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutCreditLedgerEntriesInput, Prisma.OrganizationUncheckedCreateWithoutCreditLedgerEntriesInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutCreditLedgerEntriesInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutCreditLedgerEntriesInput, Prisma.OrganizationUncheckedUpdateWithoutCreditLedgerEntriesInput>
+}
+
+export type OrganizationUpdateWithoutCreditLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutCreditLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAuditEventsInput = {
@@ -559,6 +995,10 @@ export type OrganizationCreateWithoutAuditEventsInput = {
   archivedAt?: Date | string | null
   memberships?: Prisma.MembershipCreateNestedManyWithoutOrganizationInput
   projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAuditEventsInput = {
@@ -571,6 +1011,10 @@ export type OrganizationUncheckedCreateWithoutAuditEventsInput = {
   archivedAt?: Date | string | null
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutOrganizationInput
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutOrganizationInput
+  creditAccount?: Prisma.CreditAccountUncheckedCreateNestedOneWithoutOrganizationInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedCreateNestedManyWithoutOrganizationInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAuditEventsInput = {
@@ -599,6 +1043,10 @@ export type OrganizationUpdateWithoutAuditEventsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memberships?: Prisma.MembershipUpdateManyWithoutOrganizationNestedInput
   projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAuditEventsInput = {
@@ -611,6 +1059,10 @@ export type OrganizationUncheckedUpdateWithoutAuditEventsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditAccount?: Prisma.CreditAccountUncheckedUpdateOneWithoutOrganizationNestedInput
+  creditLedgerEntries?: Prisma.CreditLedgerEntryUncheckedUpdateManyWithoutOrganizationNestedInput
+  creditReservations?: Prisma.AiUsageReservationUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 
@@ -622,12 +1074,18 @@ export type OrganizationCountOutputType = {
   memberships: number
   projects: number
   auditEvents: number
+  aiUsageEvents: number
+  creditLedgerEntries: number
+  creditReservations: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | OrganizationCountOutputTypeCountMembershipsArgs
   projects?: boolean | OrganizationCountOutputTypeCountProjectsArgs
   auditEvents?: boolean | OrganizationCountOutputTypeCountAuditEventsArgs
+  aiUsageEvents?: boolean | OrganizationCountOutputTypeCountAiUsageEventsArgs
+  creditLedgerEntries?: boolean | OrganizationCountOutputTypeCountCreditLedgerEntriesArgs
+  creditReservations?: boolean | OrganizationCountOutputTypeCountCreditReservationsArgs
 }
 
 /**
@@ -661,6 +1119,27 @@ export type OrganizationCountOutputTypeCountAuditEventsArgs<ExtArgs extends runt
   where?: Prisma.AuditEventWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountAiUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiUsageEventWhereInput
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountCreditLedgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CreditLedgerEntryWhereInput
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountCreditReservationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiUsageReservationWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -673,6 +1152,10 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   memberships?: boolean | Prisma.Organization$membershipsArgs<ExtArgs>
   projects?: boolean | Prisma.Organization$projectsArgs<ExtArgs>
   auditEvents?: boolean | Prisma.Organization$auditEventsArgs<ExtArgs>
+  aiUsageEvents?: boolean | Prisma.Organization$aiUsageEventsArgs<ExtArgs>
+  creditAccount?: boolean | Prisma.Organization$creditAccountArgs<ExtArgs>
+  creditLedgerEntries?: boolean | Prisma.Organization$creditLedgerEntriesArgs<ExtArgs>
+  creditReservations?: boolean | Prisma.Organization$creditReservationsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -711,6 +1194,10 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   memberships?: boolean | Prisma.Organization$membershipsArgs<ExtArgs>
   projects?: boolean | Prisma.Organization$projectsArgs<ExtArgs>
   auditEvents?: boolean | Prisma.Organization$auditEventsArgs<ExtArgs>
+  aiUsageEvents?: boolean | Prisma.Organization$aiUsageEventsArgs<ExtArgs>
+  creditAccount?: boolean | Prisma.Organization$creditAccountArgs<ExtArgs>
+  creditLedgerEntries?: boolean | Prisma.Organization$creditLedgerEntriesArgs<ExtArgs>
+  creditReservations?: boolean | Prisma.Organization$creditReservationsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -722,6 +1209,10 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
     projects: Prisma.$ProjectPayload<ExtArgs>[]
     auditEvents: Prisma.$AuditEventPayload<ExtArgs>[]
+    aiUsageEvents: Prisma.$AiUsageEventPayload<ExtArgs>[]
+    creditAccount: Prisma.$CreditAccountPayload<ExtArgs> | null
+    creditLedgerEntries: Prisma.$CreditLedgerEntryPayload<ExtArgs>[]
+    creditReservations: Prisma.$AiUsageReservationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1128,6 +1619,10 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   memberships<T extends Prisma.Organization$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   projects<T extends Prisma.Organization$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditEvents<T extends Prisma.Organization$auditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$auditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiUsageEvents<T extends Prisma.Organization$aiUsageEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$aiUsageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  creditAccount<T extends Prisma.Organization$creditAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$creditAccountArgs<ExtArgs>>): Prisma.Prisma__CreditAccountClient<runtime.Types.Result.GetResult<Prisma.$CreditAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  creditLedgerEntries<T extends Prisma.Organization$creditLedgerEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$creditLedgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CreditLedgerEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  creditReservations<T extends Prisma.Organization$creditReservationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$creditReservationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiUsageReservationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1626,6 +2121,97 @@ export type Organization$auditEventsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.AuditEventScalarFieldEnum | Prisma.AuditEventScalarFieldEnum[]
+}
+
+/**
+ * Organization.aiUsageEvents
+ */
+export type Organization$aiUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiUsageEvent
+   */
+  select?: Prisma.AiUsageEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiUsageEvent
+   */
+  omit?: Prisma.AiUsageEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiUsageEventInclude<ExtArgs> | null
+  where?: Prisma.AiUsageEventWhereInput
+  orderBy?: Prisma.AiUsageEventOrderByWithRelationInput | Prisma.AiUsageEventOrderByWithRelationInput[]
+  cursor?: Prisma.AiUsageEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiUsageEventScalarFieldEnum | Prisma.AiUsageEventScalarFieldEnum[]
+}
+
+/**
+ * Organization.creditAccount
+ */
+export type Organization$creditAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CreditAccount
+   */
+  select?: Prisma.CreditAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CreditAccount
+   */
+  omit?: Prisma.CreditAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CreditAccountInclude<ExtArgs> | null
+  where?: Prisma.CreditAccountWhereInput
+}
+
+/**
+ * Organization.creditLedgerEntries
+ */
+export type Organization$creditLedgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CreditLedgerEntry
+   */
+  select?: Prisma.CreditLedgerEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CreditLedgerEntry
+   */
+  omit?: Prisma.CreditLedgerEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CreditLedgerEntryInclude<ExtArgs> | null
+  where?: Prisma.CreditLedgerEntryWhereInput
+  orderBy?: Prisma.CreditLedgerEntryOrderByWithRelationInput | Prisma.CreditLedgerEntryOrderByWithRelationInput[]
+  cursor?: Prisma.CreditLedgerEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CreditLedgerEntryScalarFieldEnum | Prisma.CreditLedgerEntryScalarFieldEnum[]
+}
+
+/**
+ * Organization.creditReservations
+ */
+export type Organization$creditReservationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiUsageReservation
+   */
+  select?: Prisma.AiUsageReservationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiUsageReservation
+   */
+  omit?: Prisma.AiUsageReservationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiUsageReservationInclude<ExtArgs> | null
+  where?: Prisma.AiUsageReservationWhereInput
+  orderBy?: Prisma.AiUsageReservationOrderByWithRelationInput | Prisma.AiUsageReservationOrderByWithRelationInput[]
+  cursor?: Prisma.AiUsageReservationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiUsageReservationScalarFieldEnum | Prisma.AiUsageReservationScalarFieldEnum[]
 }
 
 /**

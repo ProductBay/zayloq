@@ -183,6 +183,7 @@ export type ProjectEnvironmentWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ProjectEnvironment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectEnvironment"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
+  aiUsageEvents?: Prisma.AiUsageEventListRelationFilter
 }
 
 export type ProjectEnvironmentOrderByWithRelationInput = {
@@ -192,6 +193,7 @@ export type ProjectEnvironmentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   project?: Prisma.ProjectOrderByWithRelationInput
+  aiUsageEvents?: Prisma.AiUsageEventOrderByRelationAggregateInput
 }
 
 export type ProjectEnvironmentWhereUniqueInput = Prisma.AtLeast<{
@@ -205,6 +207,7 @@ export type ProjectEnvironmentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ProjectEnvironment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectEnvironment"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
+  aiUsageEvents?: Prisma.AiUsageEventListRelationFilter
 }, "id" | "projectId_type">
 
 export type ProjectEnvironmentOrderByWithAggregationInput = {
@@ -235,6 +238,7 @@ export type ProjectEnvironmentCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   project: Prisma.ProjectCreateNestedOneWithoutEnvironmentsInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutEnvironmentInput
 }
 
 export type ProjectEnvironmentUncheckedCreateInput = {
@@ -243,6 +247,7 @@ export type ProjectEnvironmentUncheckedCreateInput = {
   type: $Enums.EnvironmentType
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutEnvironmentInput
 }
 
 export type ProjectEnvironmentUpdateInput = {
@@ -251,6 +256,7 @@ export type ProjectEnvironmentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneRequiredWithoutEnvironmentsNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutEnvironmentNestedInput
 }
 
 export type ProjectEnvironmentUncheckedUpdateInput = {
@@ -259,6 +265,7 @@ export type ProjectEnvironmentUncheckedUpdateInput = {
   type?: Prisma.EnumEnvironmentTypeFieldUpdateOperationsInput | $Enums.EnvironmentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutEnvironmentNestedInput
 }
 
 export type ProjectEnvironmentCreateManyInput = {
@@ -323,6 +330,11 @@ export type ProjectEnvironmentMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type ProjectEnvironmentNullableScalarRelationFilter = {
+  is?: Prisma.ProjectEnvironmentWhereInput | null
+  isNot?: Prisma.ProjectEnvironmentWhereInput | null
+}
+
 export type ProjectEnvironmentCreateNestedManyWithoutProjectInput = {
   create?: Prisma.XOR<Prisma.ProjectEnvironmentCreateWithoutProjectInput, Prisma.ProjectEnvironmentUncheckedCreateWithoutProjectInput> | Prisma.ProjectEnvironmentCreateWithoutProjectInput[] | Prisma.ProjectEnvironmentUncheckedCreateWithoutProjectInput[]
   connectOrCreate?: Prisma.ProjectEnvironmentCreateOrConnectWithoutProjectInput | Prisma.ProjectEnvironmentCreateOrConnectWithoutProjectInput[]
@@ -369,11 +381,28 @@ export type EnumEnvironmentTypeFieldUpdateOperationsInput = {
   set?: $Enums.EnvironmentType
 }
 
+export type ProjectEnvironmentCreateNestedOneWithoutAiUsageEventsInput = {
+  create?: Prisma.XOR<Prisma.ProjectEnvironmentCreateWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUncheckedCreateWithoutAiUsageEventsInput>
+  connectOrCreate?: Prisma.ProjectEnvironmentCreateOrConnectWithoutAiUsageEventsInput
+  connect?: Prisma.ProjectEnvironmentWhereUniqueInput
+}
+
+export type ProjectEnvironmentUpdateOneWithoutAiUsageEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectEnvironmentCreateWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUncheckedCreateWithoutAiUsageEventsInput>
+  connectOrCreate?: Prisma.ProjectEnvironmentCreateOrConnectWithoutAiUsageEventsInput
+  upsert?: Prisma.ProjectEnvironmentUpsertWithoutAiUsageEventsInput
+  disconnect?: Prisma.ProjectEnvironmentWhereInput | boolean
+  delete?: Prisma.ProjectEnvironmentWhereInput | boolean
+  connect?: Prisma.ProjectEnvironmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectEnvironmentUpdateToOneWithWhereWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUpdateWithoutAiUsageEventsInput>, Prisma.ProjectEnvironmentUncheckedUpdateWithoutAiUsageEventsInput>
+}
+
 export type ProjectEnvironmentCreateWithoutProjectInput = {
   id?: string
   type: $Enums.EnvironmentType
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutEnvironmentInput
 }
 
 export type ProjectEnvironmentUncheckedCreateWithoutProjectInput = {
@@ -381,6 +410,7 @@ export type ProjectEnvironmentUncheckedCreateWithoutProjectInput = {
   type: $Enums.EnvironmentType
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutEnvironmentInput
 }
 
 export type ProjectEnvironmentCreateOrConnectWithoutProjectInput = {
@@ -420,6 +450,54 @@ export type ProjectEnvironmentScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ProjectEnvironment"> | Date | string
 }
 
+export type ProjectEnvironmentCreateWithoutAiUsageEventsInput = {
+  id?: string
+  type: $Enums.EnvironmentType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  project: Prisma.ProjectCreateNestedOneWithoutEnvironmentsInput
+}
+
+export type ProjectEnvironmentUncheckedCreateWithoutAiUsageEventsInput = {
+  id?: string
+  projectId: string
+  type: $Enums.EnvironmentType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ProjectEnvironmentCreateOrConnectWithoutAiUsageEventsInput = {
+  where: Prisma.ProjectEnvironmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectEnvironmentCreateWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUncheckedCreateWithoutAiUsageEventsInput>
+}
+
+export type ProjectEnvironmentUpsertWithoutAiUsageEventsInput = {
+  update: Prisma.XOR<Prisma.ProjectEnvironmentUpdateWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUncheckedUpdateWithoutAiUsageEventsInput>
+  create: Prisma.XOR<Prisma.ProjectEnvironmentCreateWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUncheckedCreateWithoutAiUsageEventsInput>
+  where?: Prisma.ProjectEnvironmentWhereInput
+}
+
+export type ProjectEnvironmentUpdateToOneWithWhereWithoutAiUsageEventsInput = {
+  where?: Prisma.ProjectEnvironmentWhereInput
+  data: Prisma.XOR<Prisma.ProjectEnvironmentUpdateWithoutAiUsageEventsInput, Prisma.ProjectEnvironmentUncheckedUpdateWithoutAiUsageEventsInput>
+}
+
+export type ProjectEnvironmentUpdateWithoutAiUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumEnvironmentTypeFieldUpdateOperationsInput | $Enums.EnvironmentType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneRequiredWithoutEnvironmentsNestedInput
+}
+
+export type ProjectEnvironmentUncheckedUpdateWithoutAiUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumEnvironmentTypeFieldUpdateOperationsInput | $Enums.EnvironmentType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ProjectEnvironmentCreateManyProjectInput = {
   id?: string
   type: $Enums.EnvironmentType
@@ -432,6 +510,7 @@ export type ProjectEnvironmentUpdateWithoutProjectInput = {
   type?: Prisma.EnumEnvironmentTypeFieldUpdateOperationsInput | $Enums.EnvironmentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutEnvironmentNestedInput
 }
 
 export type ProjectEnvironmentUncheckedUpdateWithoutProjectInput = {
@@ -439,6 +518,7 @@ export type ProjectEnvironmentUncheckedUpdateWithoutProjectInput = {
   type?: Prisma.EnumEnvironmentTypeFieldUpdateOperationsInput | $Enums.EnvironmentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutEnvironmentNestedInput
 }
 
 export type ProjectEnvironmentUncheckedUpdateManyWithoutProjectInput = {
@@ -449,6 +529,35 @@ export type ProjectEnvironmentUncheckedUpdateManyWithoutProjectInput = {
 }
 
 
+/**
+ * Count Type ProjectEnvironmentCountOutputType
+ */
+
+export type ProjectEnvironmentCountOutputType = {
+  aiUsageEvents: number
+}
+
+export type ProjectEnvironmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  aiUsageEvents?: boolean | ProjectEnvironmentCountOutputTypeCountAiUsageEventsArgs
+}
+
+/**
+ * ProjectEnvironmentCountOutputType without action
+ */
+export type ProjectEnvironmentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectEnvironmentCountOutputType
+   */
+  select?: Prisma.ProjectEnvironmentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProjectEnvironmentCountOutputType without action
+ */
+export type ProjectEnvironmentCountOutputTypeCountAiUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiUsageEventWhereInput
+}
+
 
 export type ProjectEnvironmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -457,6 +566,8 @@ export type ProjectEnvironmentSelect<ExtArgs extends runtime.Types.Extensions.In
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
+  aiUsageEvents?: boolean | Prisma.ProjectEnvironment$aiUsageEventsArgs<ExtArgs>
+  _count?: boolean | Prisma.ProjectEnvironmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["projectEnvironment"]>
 
 export type ProjectEnvironmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -488,6 +599,8 @@ export type ProjectEnvironmentSelectScalar = {
 export type ProjectEnvironmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["projectEnvironment"]>
 export type ProjectEnvironmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
+  aiUsageEvents?: boolean | Prisma.ProjectEnvironment$aiUsageEventsArgs<ExtArgs>
+  _count?: boolean | Prisma.ProjectEnvironmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectEnvironmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -500,6 +613,7 @@ export type $ProjectEnvironmentPayload<ExtArgs extends runtime.Types.Extensions.
   name: "ProjectEnvironment"
   objects: {
     project: Prisma.$ProjectPayload<ExtArgs>
+    aiUsageEvents: Prisma.$AiUsageEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -902,6 +1016,7 @@ readonly fields: ProjectEnvironmentFieldRefs;
 export interface Prisma__ProjectEnvironmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  aiUsageEvents<T extends Prisma.ProjectEnvironment$aiUsageEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectEnvironment$aiUsageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1334,6 +1449,30 @@ export type ProjectEnvironmentDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many ProjectEnvironments to delete.
    */
   limit?: number
+}
+
+/**
+ * ProjectEnvironment.aiUsageEvents
+ */
+export type ProjectEnvironment$aiUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiUsageEvent
+   */
+  select?: Prisma.AiUsageEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiUsageEvent
+   */
+  omit?: Prisma.AiUsageEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiUsageEventInclude<ExtArgs> | null
+  where?: Prisma.AiUsageEventWhereInput
+  orderBy?: Prisma.AiUsageEventOrderByWithRelationInput | Prisma.AiUsageEventOrderByWithRelationInput[]
+  cursor?: Prisma.AiUsageEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiUsageEventScalarFieldEnum | Prisma.AiUsageEventScalarFieldEnum[]
 }
 
 /**

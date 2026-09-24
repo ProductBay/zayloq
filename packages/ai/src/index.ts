@@ -8,3 +8,6 @@ export * from "./providers/openai/openai-provider.js";
 export * from "./providers/registry.js";
 export * from "./security/request-policy.js";
 export * from "./usage/cost-accounting.js";
+export * from "./usage/credit-pricing.js";
+export * from "./usage/usage-accounting.js";
+export * from "./usage/metered-ai-gateway.js";

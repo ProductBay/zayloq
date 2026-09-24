@@ -31,6 +31,27 @@ enum EnvironmentType {
   PRODUCTION
 }
 
+enum AiUsageStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum CreditReservationStatus {
+  ACTIVE
+  SETTLED
+  RELEASED
+}
+
+enum CreditLedgerEntryType {
+  GRANT
+  RESERVATION
+  RELEASE
+  CONSUMPTION
+  ADJUSTMENT
+  REFUND
+}
+
 model User {
   id              String    @id @default(uuid()) @db.Uuid
   email           String    @unique @db.VarChar(320)
@@ -45,6 +66,8 @@ model User {
   authSessions            AuthSession[]
   emailVerificationTokens EmailVerificationToken[]
   passwordResetTokens     PasswordResetToken[]
+  aiUsageEvents           AiUsageEvent[]
+  creditReservations      AiUsageReservation[]
 
   @@index([createdAt])
   @@map("users")
@@ -62,6 +85,10 @@ model Organization {
   memberships Membership[]
   projects    Project[]
   auditEvents AuditEvent[]
+  aiUsageEvents AiUsageEvent[]
+  creditAccount CreditAccount?
+  creditLedgerEntries CreditLedgerEntry[]
+  creditReservations AiUsageReservation[]
 
   @@index([status])
   @@index([createdAt])
@@ -98,6 +125,7 @@ model Project {
   organization Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   environments ProjectEnvironment[]
   auditEvents  AuditEvent[]
+  aiUsageEvents AiUsageEvent[]
 
   @@unique([organizationId, slug])
   @@index([organizationId, status])
@@ -113,10 +141,114 @@ model ProjectEnvironment {
   updatedAt DateTime        @updatedAt
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  aiUsageEvents AiUsageEvent[]
 
   @@unique([projectId, type])
   @@index([projectId])
   @@map("project_environments")
+}
+
+model AiUsageEvent {
+  id                  String        @id @default(uuid()) @db.Uuid
+  organizationId      String        @db.Uuid
+  userId              String        @db.Uuid
+  projectId           String?       @db.Uuid
+  environmentId       String?       @db.Uuid
+  provider             String        @db.VarChar(40)
+  providerModel        String        @db.VarChar(160)
+  logicalModelRole     String        @db.VarChar(40)
+  operationType        String        @db.VarChar(100)
+  idempotencyKey       String        @db.VarChar(160)
+  providerRequestId    String?       @db.VarChar(255)
+  inputTokens          Int?
+  cachedInputTokens    Int?
+  outputTokens         Int?
+  totalTokens          Int?
+  providerCostMicros   BigInt?
+  currency             String        @default("USD") @db.VarChar(3)
+  pricingVersion       String?       @db.VarChar(160)
+  creditsChargedUnits  BigInt        @default(0)
+  status               AiUsageStatus @default(PENDING)
+  retryCount           Int           @default(0)
+  latencyMs            Int?
+  failureCode          String?       @db.VarChar(80)
+  createdAt            DateTime      @default(now())
+  completedAt          DateTime?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  environment ProjectEnvironment? @relation(fields: [environmentId], references: [id], onDelete: SetNull)
+  reservation AiUsageReservation?
+  ledgerEntries CreditLedgerEntry[]
+
+  @@unique([organizationId, userId, operationType, idempotencyKey])
+  @@index([organizationId, createdAt])
+  @@index([userId, createdAt])
+  @@index([projectId, createdAt])
+  @@index([operationType, createdAt])
+  @@index([status, createdAt])
+  @@map("ai_usage_events")
+}
+
+model CreditAccount {
+  organizationId          String   @id @db.Uuid
+  availableBalanceUnits   BigInt   @default(0)
+  reservedBalanceUnits    BigInt   @default(0)
+  lifetimeGrantedUnits    BigInt   @default(0)
+  lifetimeConsumedUnits   BigInt   @default(0)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("credit_accounts")
+}
+
+model AiUsageReservation {
+  id                String                  @id @default(uuid()) @db.Uuid
+  organizationId    String                  @db.Uuid
+  userId            String                  @db.Uuid
+  usageEventId      String                  @unique @db.Uuid
+  reservedUnits     BigInt
+  settledUnits      BigInt?
+  status            CreditReservationStatus @default(ACTIVE)
+  createdAt         DateTime                @default(now())
+  settledAt         DateTime?
+  releasedAt        DateTime?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usageEvent AiUsageEvent @relation(fields: [usageEventId], references: [id], onDelete: Cascade)
+  ledgerEntries CreditLedgerEntry[]
+
+  @@index([organizationId, status])
+  @@index([userId, createdAt])
+  @@map("ai_usage_reservations")
+}
+
+model CreditLedgerEntry {
+  id                String                @id @default(uuid()) @db.Uuid
+  organizationId    String                @db.Uuid
+  usageEventId      String?               @db.Uuid
+  reservationId     String?               @db.Uuid
+  type               CreditLedgerEntryType
+  amountUnits        BigInt
+  referenceType      String                @db.VarChar(80)
+  referenceId        String                @db.VarChar(160)
+  category           String                @db.VarChar(100)
+  description        String?               @db.VarChar(255)
+  createdAt          DateTime              @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  usageEvent AiUsageEvent? @relation(fields: [usageEventId], references: [id], onDelete: SetNull)
+  reservation AiUsageReservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([usageEventId])
+  @@index([reservationId])
+  @@index([type, createdAt])
+  @@map("credit_ledger_entries")
 }
 
 model AuditEvent {

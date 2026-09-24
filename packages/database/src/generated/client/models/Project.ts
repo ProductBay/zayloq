@@ -209,6 +209,7 @@ export type ProjectWhereInput = {
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   environments?: Prisma.ProjectEnvironmentListRelationFilter
   auditEvents?: Prisma.AuditEventListRelationFilter
+  aiUsageEvents?: Prisma.AiUsageEventListRelationFilter
 }
 
 export type ProjectOrderByWithRelationInput = {
@@ -223,6 +224,7 @@ export type ProjectOrderByWithRelationInput = {
   organization?: Prisma.OrganizationOrderByWithRelationInput
   environments?: Prisma.ProjectEnvironmentOrderByRelationAggregateInput
   auditEvents?: Prisma.AuditEventOrderByRelationAggregateInput
+  aiUsageEvents?: Prisma.AiUsageEventOrderByRelationAggregateInput
 }
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -241,6 +243,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   environments?: Prisma.ProjectEnvironmentListRelationFilter
   auditEvents?: Prisma.AuditEventListRelationFilter
+  aiUsageEvents?: Prisma.AiUsageEventListRelationFilter
 }, "id" | "organizationId_slug">
 
 export type ProjectOrderByWithAggregationInput = {
@@ -282,6 +285,7 @@ export type ProjectCreateInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutProjectsInput
   environments?: Prisma.ProjectEnvironmentCreateNestedManyWithoutProjectInput
   auditEvents?: Prisma.AuditEventCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateInput = {
@@ -295,6 +299,7 @@ export type ProjectUncheckedCreateInput = {
   archivedAt?: Date | string | null
   environments?: Prisma.ProjectEnvironmentUncheckedCreateNestedManyWithoutProjectInput
   auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUpdateInput = {
@@ -308,6 +313,7 @@ export type ProjectUpdateInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutProjectsNestedInput
   environments?: Prisma.ProjectEnvironmentUpdateManyWithoutProjectNestedInput
   auditEvents?: Prisma.AuditEventUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateInput = {
@@ -321,6 +327,7 @@ export type ProjectUncheckedUpdateInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   environments?: Prisma.ProjectEnvironmentUncheckedUpdateManyWithoutProjectNestedInput
   auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyInput = {
@@ -473,6 +480,22 @@ export type ProjectUpdateOneRequiredWithoutEnvironmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutEnvironmentsInput, Prisma.ProjectUpdateWithoutEnvironmentsInput>, Prisma.ProjectUncheckedUpdateWithoutEnvironmentsInput>
 }
 
+export type ProjectCreateNestedOneWithoutAiUsageEventsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutAiUsageEventsInput, Prisma.ProjectUncheckedCreateWithoutAiUsageEventsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAiUsageEventsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutAiUsageEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutAiUsageEventsInput, Prisma.ProjectUncheckedCreateWithoutAiUsageEventsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAiUsageEventsInput
+  upsert?: Prisma.ProjectUpsertWithoutAiUsageEventsInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutAiUsageEventsInput, Prisma.ProjectUpdateWithoutAiUsageEventsInput>, Prisma.ProjectUncheckedUpdateWithoutAiUsageEventsInput>
+}
+
 export type ProjectCreateNestedOneWithoutAuditEventsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutAuditEventsInput, Prisma.ProjectUncheckedCreateWithoutAuditEventsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAuditEventsInput
@@ -499,6 +522,7 @@ export type ProjectCreateWithoutOrganizationInput = {
   archivedAt?: Date | string | null
   environments?: Prisma.ProjectEnvironmentCreateNestedManyWithoutProjectInput
   auditEvents?: Prisma.AuditEventCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutOrganizationInput = {
@@ -511,6 +535,7 @@ export type ProjectUncheckedCreateWithoutOrganizationInput = {
   archivedAt?: Date | string | null
   environments?: Prisma.ProjectEnvironmentUncheckedCreateNestedManyWithoutProjectInput
   auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutOrganizationInput = {
@@ -563,6 +588,7 @@ export type ProjectCreateWithoutEnvironmentsInput = {
   archivedAt?: Date | string | null
   organization: Prisma.OrganizationCreateNestedOneWithoutProjectsInput
   auditEvents?: Prisma.AuditEventCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutEnvironmentsInput = {
@@ -575,6 +601,7 @@ export type ProjectUncheckedCreateWithoutEnvironmentsInput = {
   updatedAt?: Date | string
   archivedAt?: Date | string | null
   auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutEnvironmentsInput = {
@@ -603,6 +630,7 @@ export type ProjectUpdateWithoutEnvironmentsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutProjectsNestedInput
   auditEvents?: Prisma.AuditEventUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutEnvironmentsInput = {
@@ -614,6 +642,75 @@ export type ProjectUncheckedUpdateWithoutEnvironmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutAiUsageEventsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.ProjectStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutProjectsInput
+  environments?: Prisma.ProjectEnvironmentCreateNestedManyWithoutProjectInput
+  auditEvents?: Prisma.AuditEventCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutAiUsageEventsInput = {
+  id?: string
+  organizationId: string
+  name: string
+  slug: string
+  status?: $Enums.ProjectStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  environments?: Prisma.ProjectEnvironmentUncheckedCreateNestedManyWithoutProjectInput
+  auditEvents?: Prisma.AuditEventUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutAiUsageEventsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutAiUsageEventsInput, Prisma.ProjectUncheckedCreateWithoutAiUsageEventsInput>
+}
+
+export type ProjectUpsertWithoutAiUsageEventsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutAiUsageEventsInput, Prisma.ProjectUncheckedUpdateWithoutAiUsageEventsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutAiUsageEventsInput, Prisma.ProjectUncheckedCreateWithoutAiUsageEventsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutAiUsageEventsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutAiUsageEventsInput, Prisma.ProjectUncheckedUpdateWithoutAiUsageEventsInput>
+}
+
+export type ProjectUpdateWithoutAiUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutProjectsNestedInput
+  environments?: Prisma.ProjectEnvironmentUpdateManyWithoutProjectNestedInput
+  auditEvents?: Prisma.AuditEventUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutAiUsageEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  environments?: Prisma.ProjectEnvironmentUncheckedUpdateManyWithoutProjectNestedInput
   auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -627,6 +724,7 @@ export type ProjectCreateWithoutAuditEventsInput = {
   archivedAt?: Date | string | null
   organization: Prisma.OrganizationCreateNestedOneWithoutProjectsInput
   environments?: Prisma.ProjectEnvironmentCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutAuditEventsInput = {
@@ -639,6 +737,7 @@ export type ProjectUncheckedCreateWithoutAuditEventsInput = {
   updatedAt?: Date | string
   archivedAt?: Date | string | null
   environments?: Prisma.ProjectEnvironmentUncheckedCreateNestedManyWithoutProjectInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutAuditEventsInput = {
@@ -667,6 +766,7 @@ export type ProjectUpdateWithoutAuditEventsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutProjectsNestedInput
   environments?: Prisma.ProjectEnvironmentUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutAuditEventsInput = {
@@ -679,6 +779,7 @@ export type ProjectUncheckedUpdateWithoutAuditEventsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   environments?: Prisma.ProjectEnvironmentUncheckedUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyOrganizationInput = {
@@ -701,6 +802,7 @@ export type ProjectUpdateWithoutOrganizationInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   environments?: Prisma.ProjectEnvironmentUpdateManyWithoutProjectNestedInput
   auditEvents?: Prisma.AuditEventUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutOrganizationInput = {
@@ -713,6 +815,7 @@ export type ProjectUncheckedUpdateWithoutOrganizationInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   environments?: Prisma.ProjectEnvironmentUncheckedUpdateManyWithoutProjectNestedInput
   auditEvents?: Prisma.AuditEventUncheckedUpdateManyWithoutProjectNestedInput
+  aiUsageEvents?: Prisma.AiUsageEventUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutOrganizationInput = {
@@ -733,11 +836,13 @@ export type ProjectUncheckedUpdateManyWithoutOrganizationInput = {
 export type ProjectCountOutputType = {
   environments: number
   auditEvents: number
+  aiUsageEvents: number
 }
 
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   environments?: boolean | ProjectCountOutputTypeCountEnvironmentsArgs
   auditEvents?: boolean | ProjectCountOutputTypeCountAuditEventsArgs
+  aiUsageEvents?: boolean | ProjectCountOutputTypeCountAiUsageEventsArgs
 }
 
 /**
@@ -764,6 +869,13 @@ export type ProjectCountOutputTypeCountAuditEventsArgs<ExtArgs extends runtime.T
   where?: Prisma.AuditEventWhereInput
 }
 
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountAiUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiUsageEventWhereInput
+}
+
 
 export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -777,6 +889,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   environments?: boolean | Prisma.Project$environmentsArgs<ExtArgs>
   auditEvents?: boolean | Prisma.Project$auditEventsArgs<ExtArgs>
+  aiUsageEvents?: boolean | Prisma.Project$aiUsageEventsArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -820,6 +933,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   environments?: boolean | Prisma.Project$environmentsArgs<ExtArgs>
   auditEvents?: boolean | Prisma.Project$auditEventsArgs<ExtArgs>
+  aiUsageEvents?: boolean | Prisma.Project$aiUsageEventsArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -835,6 +949,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     organization: Prisma.$OrganizationPayload<ExtArgs>
     environments: Prisma.$ProjectEnvironmentPayload<ExtArgs>[]
     auditEvents: Prisma.$AuditEventPayload<ExtArgs>[]
+    aiUsageEvents: Prisma.$AiUsageEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1242,6 +1357,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   environments<T extends Prisma.Project$environmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$environmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectEnvironmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditEvents<T extends Prisma.Project$auditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$auditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiUsageEvents<T extends Prisma.Project$aiUsageEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$aiUsageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiUsageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1725,6 +1841,30 @@ export type Project$auditEventsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.AuditEventScalarFieldEnum | Prisma.AuditEventScalarFieldEnum[]
+}
+
+/**
+ * Project.aiUsageEvents
+ */
+export type Project$aiUsageEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiUsageEvent
+   */
+  select?: Prisma.AiUsageEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiUsageEvent
+   */
+  omit?: Prisma.AiUsageEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiUsageEventInclude<ExtArgs> | null
+  where?: Prisma.AiUsageEventWhereInput
+  orderBy?: Prisma.AiUsageEventOrderByWithRelationInput | Prisma.AiUsageEventOrderByWithRelationInput[]
+  cursor?: Prisma.AiUsageEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiUsageEventScalarFieldEnum | Prisma.AiUsageEventScalarFieldEnum[]
 }
 
 /**
